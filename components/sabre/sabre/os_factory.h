@@ -8,7 +8,9 @@ namespace sabre
     class Factory
     {
     public:
-        virtual std::ostream &create_uart_output_stream(uint16_t uart_port) = 0;
+        virtual std::ostream &
+        create_uart_output_stream(uint16_t index,
+                                  std::streambuf *buffer = nullptr) = 0;
     };
 
 } // namespace sabre

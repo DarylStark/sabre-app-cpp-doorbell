@@ -7,14 +7,15 @@
 
 namespace sabre::esp32
 {
-    class ESP32Factory : public Factory
+    class ESP32Factory : public sabre::Factory
     {
     private:
         std::map<uint16_t, std::unique_ptr<std::ostream>> _output_streams;
 
     public:
-        ESP32Factory();
-        std::ostream &create_uart_output_stream(uint16_t uart_port) override;
+        std::ostream &
+        create_uart_output_stream(uint16_t index,
+                                  std::streambuf *buffer = nullptr) override;
     };
 } // namespace sabre::esp32
 
