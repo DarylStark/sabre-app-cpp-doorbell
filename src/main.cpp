@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sabre/uart/uart_output_stream_buffer.h>
 #include <sabre_esp32/esp32_factory.h>
+#include <sabre_esp32/gpio/gpio.h>
 #include <sabre_esp32/uart/uart.h>
 #include <string>
 
@@ -18,29 +19,29 @@ private:
     std::ostream _u0o;
     std::ostream _u2o;
 
+    sabre::esp32::GPIO _led_gpio;
+
 public:
     Application(std::shared_ptr<sabre::Factory> factory)
-        : _os_factory(factory), _u0o(nullptr), _u2o(nullptr)
+        : _os_factory(factory), _u0o(nullptr), _u2o(nullptr), _led_gpio(2)
     {
-        vTaskDelay(5000 / portTICK_PERIOD_MS);
         _uart_stream_buf =
             _os_factory->create_uart_output_stream_buffer(0, 115200, 1, 3, 8);
         _u0o.rdbuf(_uart_stream_buf.get());
-        _u0o << "\n\nHOI APP!" << std::endl;
-
-        _uart_stream_buf_2 =
-            _os_factory->create_uart_output_stream_buffer(2, 115200, 17, 16, 8);
-        _u2o.rdbuf(_uart_stream_buf_2.get());
-        _u2o << "\n\nHOI APP vanaf UART 2!" << std::endl;
+        _u0o << "\n\nStarting application ..." << std::endl;
+        _led_gpio.set_high();
+        vTaskDelay(2000 / portTICK_PERIOD_MS);
     }
 
     void run_loop()
     {
         while (true)
         {
-            _u0o << "U1: 123456789ABCDEF\n" << std::flush;
-            _u2o << "U2: 123456789ABCDEF\n" << std::flush;
-            vTaskDelay(1000 / portTICK_PERIOD_MS);
+            _u0o << "Booted!!" << std::endl;
+            vTaskDelay(500 / portTICK_PERIOD_MS);
+            _led_gpio.set_high();
+            vTaskDelay(500 / portTICK_PERIOD_MS);
+            _led_gpio.set_low();
         }
     }
 };
