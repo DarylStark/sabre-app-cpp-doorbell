@@ -4,7 +4,8 @@
 
 namespace sabre
 {
-    UARTStreamBuf::UARTStreamBuf(sabre::UART &uart, size_t buffer_size)
+    UARTStreamBuf::UARTStreamBuf(std::shared_ptr<sabre::UART> uart,
+                                 size_t buffer_size)
         : _uart(uart)
     {
         _buffer = new char[buffer_size];
@@ -22,9 +23,10 @@ namespace sabre
     {
         if (c != traits_type::eof())
         {
+            if (pptr() >= epptr())
+                sync();
             *pptr() = c;
             pbump(1);
-            sync();
         }
         return c;
     }
@@ -32,17 +34,17 @@ namespace sabre
     int UARTStreamBuf::sync()
     {
         size_t len = pptr() - pbase();
-        if (len > 0)
-        {
-            for (size_t i = 0; i < len; ++i)
-                _uart.write_byte(pbase()[i]);
-            _reset_put_buffer();
-        }
+        if (len == 0)
+            return 0;
+
+        for (size_t i = 0; i < len; ++i)
+            _uart->write_byte(pbase()[i]);
+        _reset_put_buffer();
         return 0;
     }
 
     void UARTStreamBuf::_reset_put_buffer()
     {
-        setp(_buffer, _buffer + _buffer_size - 1);
+        setp(_buffer, _buffer + _buffer_size);
     }
 } // namespace sabre
