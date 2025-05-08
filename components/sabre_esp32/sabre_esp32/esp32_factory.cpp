@@ -1,19 +1,14 @@
 #include "./esp32_factory.h"
 
-#include "./uart/uart.h"
 #include <iostream>
 
 namespace sabre::esp32
 {
-    std::ostream &
-    ESP32Factory::create_uart_output_stream(uint16_t index,
-                                            std::streambuf *buffer)
+    std::shared_ptr<sabre::UART>
+    ESP32Factory::create_uart_object(uint32_t uart_number, int32_t baud_rate,
+                                     int32_t tx_pin, int32_t rx_pin) const
     {
-        auto it = _output_streams.find(index);
-        if (it == _output_streams.end())
-            _output_streams[index] = std::make_unique<std::ostream>(buffer);
-        if (buffer)
-            _output_streams[index]->rdbuf(buffer);
-        return *_output_streams[index];
+        return std::make_shared<sabre::esp32::UART>(UART_NUM_0, baud_rate,
+                                                    tx_pin, rx_pin);
     }
 } // namespace sabre::esp32

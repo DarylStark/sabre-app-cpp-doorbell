@@ -1,9 +1,10 @@
 #ifndef _SABRE_ESP32_FACTORY_H_
 #define _SABRE_ESP32_FACTORY_H_
 
+#include "./uart/uart.h"
 #include <map>
 #include <memory>
-#include <sabre/os_factory.h>
+#include <sabre/factory.h>
 
 namespace sabre::esp32
 {
@@ -13,9 +14,9 @@ namespace sabre::esp32
         std::map<uint16_t, std::unique_ptr<std::ostream>> _output_streams;
 
     public:
-        std::ostream &
-        create_uart_output_stream(uint16_t index,
-                                  std::streambuf *buffer = nullptr) override;
+        std::shared_ptr<sabre::UART>
+        create_uart_object(uint32_t uart_number, int32_t baud_rate,
+                           int32_t tx_pin, int32_t rx_pin) const override;
     };
 } // namespace sabre::esp32
 
