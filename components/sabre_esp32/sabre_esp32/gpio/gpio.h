@@ -2,6 +2,7 @@
 #define _SABRE_ESP32_OUTPUT_GPIO_H_
 
 #include <cstdint>
+#include <driver/gpio.h>
 #include <sabre/gpio/gpio.h>
 
 namespace sabre::esp32
