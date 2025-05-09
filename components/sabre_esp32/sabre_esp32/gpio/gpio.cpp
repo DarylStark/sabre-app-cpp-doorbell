@@ -43,8 +43,7 @@ namespace sabre::esp32
 
     bool GPIO::get_level() const
     {
-        return _inverse_level ? gpio_get_level(_gpio_num) == 0
-                              : gpio_get_level(_gpio_num) != 0;
+        return gpio_get_level(_gpio_num) == static_cast<int>(!_inverse_level);
     }
 
     void GPIO::enable_pullup()
