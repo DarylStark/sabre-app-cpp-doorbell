@@ -10,6 +10,7 @@ namespace sabre::esp32
     {
     private:
         int32_t _pin_number;
+        gpio_num_t _gpio_num;
 
     public:
         GPIO(int32_t pin_number);
