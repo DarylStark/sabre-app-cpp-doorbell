@@ -12,8 +12,6 @@
 
 #include <driver/gpio.h>
 
-#include "sabre_esp32/isr/isr.h"
-
 QueueHandle_t interputQueue;
 
 void very_special_isr_handler(int x)
@@ -50,12 +48,10 @@ private:
     sabre::esp32::GPIO _led_gpio;
     sabre::esp32::GPIO _button;
 
-    sabre::esp32::ISR _isr;
-
 public:
     Application(std::shared_ptr<sabre::Factory> factory)
         : _os_factory(factory), _u0o(nullptr), _u2o(nullptr), _led_gpio(2),
-          _button(26), _isr(26)
+          _button(26)
     {
         // Configure output stream
         _uart_stream_buf =
@@ -69,7 +65,7 @@ public:
         _button.set_as_input();
         _button.enable_pullup();
         _button.set_inverse_level();
-        _isr.set_handler(very_special_isr_handler);
+        _button.add_interrupt_handler(very_special_isr_handler);
 
         xTaskCreate(led_control_task, "LED_Control_Task", 2048, NULL, 1, NULL);
     }
@@ -87,6 +83,7 @@ extern "C"
     void app_main(void)
     {
         interputQueue = xQueueCreate(10, sizeof(int));
+        gpio_install_isr_service(0); // TODO: Move to Application class
         Application app(std::make_shared<sabre::esp32::ESP32Factory>());
         app.run_loop();
 

@@ -3,15 +3,23 @@
 
 #include <cstdint>
 #include <driver/gpio.h>
+#include <memory>
 #include <sabre/gpio/gpio.h>
 
 namespace sabre::esp32
 {
+    struct ISRConfig2
+    {
+        void (*handler)(int);
+        int gpio;
+    };
+
     class GPIO : public sabre::GPIO
     {
     private:
         int32_t _pin_number;
         gpio_num_t _gpio_num;
+        std::shared_ptr<ISRConfig2> _config;
 
     public:
         GPIO(int32_t pin_number);
@@ -29,6 +37,7 @@ namespace sabre::esp32
         void enable_pulldown() override;
         void disable_pullup() override;
         void disable_pulldown() override;
+        void add_interrupt_handler(void (*handler)(int));
     };
 } // namespace sabre::esp32
 

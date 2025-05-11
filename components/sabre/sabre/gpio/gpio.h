@@ -27,6 +27,7 @@ namespace sabre
         virtual void enable_pulldown() = 0;
         virtual void disable_pullup() = 0;
         virtual void disable_pulldown() = 0;
+        virtual void add_interrupt_handler(void (*handler)(int)) = 0;
     };
 }; // namespace sabre
 
