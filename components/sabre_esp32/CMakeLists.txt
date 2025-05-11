@@ -3,6 +3,7 @@ idf_component_register(
         sabre_esp32/uart/uart.cpp
         sabre_esp32/gpio/gpio.cpp
         sabre_esp32/esp32_factory.cpp
+        sabre_esp32/isr/isr.cpp
     INCLUDE_DIRS
         "." 
     PRIV_REQUIRES

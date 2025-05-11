@@ -1,7 +1,5 @@
 #include "./esp32_factory.h"
 
-#include <iostream>
-
 namespace sabre::esp32
 {
     std::shared_ptr<sabre::UART>

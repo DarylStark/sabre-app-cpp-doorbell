@@ -1,8 +1,6 @@
 #include "./gpio.h"
 #include <driver/gpio.h>
 
-#include <iostream>
-
 namespace sabre::esp32
 {
     GPIO::GPIO(int32_t pin_number)
