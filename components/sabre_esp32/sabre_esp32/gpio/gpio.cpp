@@ -66,7 +66,7 @@ namespace sabre::esp32
 
     void GPIO::add_interrupt_handler(void (*handler)(int))
     {
-        _config = std::make_shared<ISRConfig2>();
+        _config = std::make_shared<sabre::ISRConfig>();
         _config->handler = handler;
         _config->gpio = static_cast<int32_t>(_gpio_num);
 
@@ -75,7 +75,7 @@ namespace sabre::esp32
             static_cast<gpio_num_t>(_gpio_num),
             [](void *config)
             {
-                auto cfg = static_cast<ISRConfig2 *>(config);
+                auto cfg = static_cast<sabre::ISRConfig *>(config);
                 auto func = cfg->handler;
                 func(cfg->gpio);
             },

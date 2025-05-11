@@ -8,18 +8,12 @@
 
 namespace sabre::esp32
 {
-    struct ISRConfig2
-    {
-        void (*handler)(int);
-        int gpio;
-    };
-
     class GPIO : public sabre::GPIO
     {
     private:
         int32_t _pin_number;
         gpio_num_t _gpio_num;
-        std::shared_ptr<ISRConfig2> _config;
+        std::shared_ptr<sabre::ISRConfig> _config;
 
     public:
         GPIO(int32_t pin_number);

@@ -3,6 +3,12 @@
 
 namespace sabre
 {
+    struct ISRConfig
+    {
+        void (*handler)(int);
+        int gpio;
+    };
+
     class GPIO
     {
     protected:
