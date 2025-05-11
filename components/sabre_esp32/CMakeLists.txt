@@ -2,6 +2,8 @@ idf_component_register(
     SRCS
         sabre_esp32/uart/uart.cpp
         sabre_esp32/gpio/gpio.cpp
+        sabre_esp32/gpio/input_gpio.cpp
+        sabre_esp32/gpio/output_gpio.cpp
         sabre_esp32/esp32_factory.cpp
     INCLUDE_DIRS
         "." 

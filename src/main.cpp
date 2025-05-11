@@ -7,6 +7,8 @@
 #include <sabre/uart/uart_output_stream_buffer.h>
 #include <sabre_esp32/esp32_factory.h>
 #include <sabre_esp32/gpio/gpio.h>
+#include <sabre_esp32/gpio/input_gpio.h>
+#include <sabre_esp32/gpio/output_gpio.h>
 #include <sabre_esp32/uart/uart.h>
 #include <string>
 
@@ -45,8 +47,8 @@ private:
     std::ostream _u0o;
     std::ostream _u2o;
 
-    sabre::esp32::GPIO _led_gpio;
-    sabre::esp32::GPIO _button;
+    sabre::esp32::OutputGPIO _led_gpio;
+    sabre::esp32::InputGPIO _button;
 
 public:
     Application(std::shared_ptr<sabre::Factory> factory)
@@ -59,10 +61,7 @@ public:
         _u0o.rdbuf(_uart_stream_buf.get());
 
         // Configure GPIOs
-        _led_gpio.set_as_output();
         _led_gpio.set_low();
-        _button.reset();
-        _button.set_as_input();
         _button.enable_pullup();
         _button.set_inverse_level();
         _button.add_interrupt_handler(very_special_isr_handler);
