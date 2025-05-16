@@ -6,7 +6,6 @@
 #include <iomanip>
 #include <sabre/uart/uart_output_stream_buffer.h>
 #include <sabre_esp32/esp32_factory.h>
-#include <sabre_esp32/gpio/gpio.h>
 #include <sabre_esp32/gpio/input_gpio.h>
 #include <sabre_esp32/gpio/output_gpio.h>
 #include <sabre_esp32/uart/uart.h>
