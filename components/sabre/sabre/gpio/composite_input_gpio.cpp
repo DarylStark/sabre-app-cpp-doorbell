@@ -48,7 +48,8 @@ namespace sabre
             input_gpio->disable_pulldown();
     }
 
-    void CompositeInputGPIO::add_interrupt_handler(void (*handler)(int))
+    void
+    CompositeInputGPIO::add_interrupt_handler(std::function<void(int)> handler)
     {
         for (auto &input_gpio : _input_gpios)
             input_gpio->add_interrupt_handler(handler);

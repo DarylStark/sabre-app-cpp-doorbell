@@ -25,7 +25,7 @@ namespace sabre::esp32
         void enable_pulldown() override;
         void disable_pullup() override;
         void disable_pulldown() override;
-        void add_interrupt_handler(void (*handler)(int));
+        void add_interrupt_handler(std::function<void(int)> handler);
     };
 } // namespace sabre::esp32
 

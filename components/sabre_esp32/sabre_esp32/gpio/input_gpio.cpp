@@ -40,7 +40,7 @@ namespace sabre::esp32
         gpio_pulldown_dis(_gpio_num);
     }
 
-    void InputGPIO::add_interrupt_handler(void (*handler)(int))
+    void InputGPIO::add_interrupt_handler(std::function<void(int)> handler)
     {
         _config = std::make_shared<sabre::ISRConfig>();
         _config->handler = handler;

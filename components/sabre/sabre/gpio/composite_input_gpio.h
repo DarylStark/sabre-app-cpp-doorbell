@@ -24,7 +24,7 @@ namespace sabre
         void enable_pulldown() override;
         void disable_pullup() override;
         void disable_pulldown() override;
-        void add_interrupt_handler(void (*handler)(int));
+        void add_interrupt_handler(std::function<void(int)>);
     };
 } // namespace sabre
 

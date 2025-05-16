@@ -2,12 +2,13 @@
 #define _SABRE_INPUT_GPIO_H_
 
 #include "./gpio.h"
+#include <functional>
 
 namespace sabre
 {
     struct ISRConfig
     {
-        void (*handler)(int);
+        std::function<void(int)> handler;
         int gpio;
     };
 
@@ -26,7 +27,7 @@ namespace sabre
         virtual void enable_pulldown() = 0;
         virtual void disable_pullup() = 0;
         virtual void disable_pulldown() = 0;
-        virtual void add_interrupt_handler(void (*handler)(int)) = 0;
+        virtual void add_interrupt_handler(std::function<void(int)>) = 0;
     };
 }; // namespace sabre
 
