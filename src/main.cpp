@@ -46,24 +46,38 @@ private:
     std::ostream _u0o;
     std::ostream _u2o;
 
-    sabre::esp32::OutputGPIO _led_gpio;
-    sabre::esp32::InputGPIO _button;
+    std::shared_ptr<sabre::OutputGPIO> _led_gpio;
+    std::shared_ptr<sabre::InputGPIO> _button;
+
+protected:
+    std::shared_ptr<sabre::OutputGPIO> _get_led_gpio() const
+    {
+        std::shared_ptr<sabre::OutputGPIO> gpio =
+            _os_factory->create_output_gpio(2);
+        return gpio;
+    }
+
+    std::shared_ptr<sabre::InputGPIO> _get_button_gpio() const
+    {
+        std::shared_ptr<sabre::InputGPIO> gpio =
+            _os_factory->create_input_gpio(26);
+        gpio->enable_pullup();
+        gpio->set_inverse_level();
+        gpio->add_interrupt_handler(very_special_isr_handler);
+        return gpio;
+    }
 
 public:
     Application(std::shared_ptr<sabre::Factory> factory)
-        : _os_factory(factory), _u0o(nullptr), _u2o(nullptr), _led_gpio(2),
-          _button(26)
+        : _os_factory(factory), _u0o(nullptr), _u2o(nullptr)
     {
         // Configure output stream
         _uart_stream_buf =
             _os_factory->create_uart_output_stream_buffer(0, 115200, 1, 3, 8);
         _u0o.rdbuf(_uart_stream_buf.get());
 
-        // Configure GPIOs
-        _led_gpio.set_low();
-        _button.enable_pullup();
-        _button.set_inverse_level();
-        _button.add_interrupt_handler(very_special_isr_handler);
+        _led_gpio = _get_led_gpio();
+        _button = _get_button_gpio();
 
         xTaskCreate(led_control_task, "LED_Control_Task", 2048, NULL, 1, NULL);
     }
