@@ -12,6 +12,15 @@ namespace sabre
         int gpio;
     };
 
+    enum class ISRTrigger : int
+    {
+        RISING,
+        FALLING,
+        BOTH,
+        LOW,
+        HIGH
+    };
+
     class InputGPIO : public GPIO
     {
     protected:
@@ -27,7 +36,8 @@ namespace sabre
         virtual void enable_pulldown() = 0;
         virtual void disable_pullup() = 0;
         virtual void disable_pulldown() = 0;
-        virtual void add_interrupt_handler(std::function<void(int)>) = 0;
+        virtual void add_interrupt_handler(std::function<void(int)>,
+                                           ISRTrigger) = 0;
     };
 }; // namespace sabre
 

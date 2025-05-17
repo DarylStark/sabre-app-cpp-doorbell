@@ -1,8 +1,17 @@
 #include "./input_gpio.h"
 #include <driver/gpio.h>
+#include <iostream>
 
 namespace sabre::esp32
 {
+    std::unordered_map<sabre::ISRTrigger, gpio_int_type_t>
+        InputGPIO::_trigger_map = {
+            {sabre::ISRTrigger::RISING, GPIO_INTR_POSEDGE},
+            {sabre::ISRTrigger::FALLING, GPIO_INTR_NEGEDGE},
+            {sabre::ISRTrigger::BOTH, GPIO_INTR_ANYEDGE},
+            {sabre::ISRTrigger::LOW, GPIO_INTR_LOW_LEVEL},
+            {sabre::ISRTrigger::HIGH, GPIO_INTR_HIGH_LEVEL}};
+
     InputGPIO::InputGPIO(int32_t pin_number)
         : _pin_number(pin_number),
           _gpio_num(static_cast<gpio_num_t>(pin_number))
@@ -40,15 +49,18 @@ namespace sabre::esp32
         gpio_pulldown_dis(_gpio_num);
     }
 
-    void InputGPIO::add_interrupt_handler(std::function<void(int)> handler)
+    void InputGPIO::add_interrupt_handler(std::function<void(int)> handler,
+                                          sabre::ISRTrigger trigger)
     {
         _config = std::make_shared<sabre::ISRConfig>();
         _config->handler = handler;
         _config->gpio = static_cast<int32_t>(_gpio_num);
 
-        gpio_set_intr_type(_gpio_num, GPIO_INTR_ANYEDGE);
+        gpio_set_intr_type(_gpio_num, _trigger_map.at(trigger));
+        std::cout << "GPIO " << _pin_number << " interrupt type set to "
+                  << static_cast<int>(_trigger_map.at(trigger)) << std::endl;
         gpio_isr_handler_add(
-            static_cast<gpio_num_t>(_gpio_num),
+            _gpio_num,
             [](void *config)
             {
                 auto cfg = static_cast<sabre::ISRConfig *>(config);

@@ -49,9 +49,10 @@ namespace sabre
     }
 
     void
-    CompositeInputGPIO::add_interrupt_handler(std::function<void(int)> handler)
+    CompositeInputGPIO::add_interrupt_handler(std::function<void(int)> handler,
+                                              sabre::ISRTrigger trigger)
     {
         for (auto &input_gpio : _input_gpios)
-            input_gpio->add_interrupt_handler(handler);
+            input_gpio->add_interrupt_handler(handler, trigger);
     }
 } // namespace sabre

@@ -14,10 +14,11 @@
 #include <driver/gpio.h>
 
 QueueHandle_t interputQueue;
+bool ledState = false;
 
 void very_special_isr_handler(int x)
 {
-    xQueueSendFromISR(interputQueue, new int(x), NULL);
+    xQueueSendFromISR(interputQueue, &x, NULL);
 }
 
 void led_control_task(void *params)
@@ -63,7 +64,8 @@ protected:
             _os_factory->create_input_gpio(26);
         gpio->enable_pullup();
         gpio->set_inverse_level();
-        gpio->add_interrupt_handler(very_special_isr_handler);
+        gpio->add_interrupt_handler(very_special_isr_handler,
+                                    sabre::ISRTrigger::BOTH);
         return gpio;
     }
 
