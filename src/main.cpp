@@ -14,7 +14,6 @@
 #include <driver/gpio.h>
 
 QueueHandle_t interruptQueue;
-bool ledState = false;
 
 void very_special_isr_handler(int x)
 {
