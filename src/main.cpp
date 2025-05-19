@@ -13,12 +13,12 @@
 
 #include <driver/gpio.h>
 
-QueueHandle_t interputQueue;
+QueueHandle_t interruptQueue;
 bool ledState = false;
 
 void very_special_isr_handler(int x)
 {
-    xQueueSendFromISR(interputQueue, &x, NULL);
+    xQueueSendFromISR(interruptQueue, &x, NULL);
 }
 
 void led_control_task(void *params)
@@ -26,7 +26,7 @@ void led_control_task(void *params)
     int pinNumber;
     while (true)
     {
-        if (xQueueReceive(interputQueue, &pinNumber, portMAX_DELAY))
+        if (xQueueReceive(interruptQueue, &pinNumber, portMAX_DELAY))
         {
             gpio_set_level(
                 GPIO_NUM_2,
@@ -96,7 +96,7 @@ extern "C"
 {
     void app_main(void)
     {
-        interputQueue = xQueueCreate(10, sizeof(int));
+        interruptQueue = xQueueCreate(10, sizeof(int));
         gpio_install_isr_service(0); // TODO: Move to Application class
         Application app(std::make_shared<sabre::esp32::ESP32Factory>());
         app.run_loop();
