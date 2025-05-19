@@ -3,6 +3,8 @@
 
 #include "./uart/uart.h"
 #include "./uart/uart_output_stream_buffer.h"
+#include "gpio/input_gpio.h"
+#include "gpio/output_gpio.h"
 #include <memory>
 #include <ostream>
 
@@ -20,6 +22,12 @@ namespace sabre
                                          int32_t baud_rate, int32_t tx_pin,
                                          int32_t rx_pin,
                                          size_t buffer_size) const;
+
+        virtual std::shared_ptr<InputGPIO>
+        create_input_gpio(int32_t pin) const = 0;
+
+        virtual std::shared_ptr<OutputGPIO>
+        create_output_gpio(int32_t pin) const = 0;
     };
 
 } // namespace sabre

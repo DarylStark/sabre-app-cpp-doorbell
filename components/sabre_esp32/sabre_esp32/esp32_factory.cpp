@@ -1,7 +1,5 @@
 #include "./esp32_factory.h"
 
-#include <iostream>
-
 namespace sabre::esp32
 {
     std::shared_ptr<sabre::UART>
@@ -10,5 +8,17 @@ namespace sabre::esp32
     {
         return std::make_shared<sabre::esp32::UART>(
             static_cast<uart_port_t>(uart_number), baud_rate, tx_pin, rx_pin);
+    }
+
+    std::shared_ptr<sabre::InputGPIO>
+    ESP32Factory::create_input_gpio(int32_t pin) const
+    {
+        return std::make_shared<sabre::esp32::InputGPIO>(pin);
+    }
+
+    std::shared_ptr<sabre::OutputGPIO>
+    ESP32Factory::create_output_gpio(int32_t pin) const
+    {
+        return std::make_shared<OutputGPIO>(pin);
     }
 } // namespace sabre::esp32
