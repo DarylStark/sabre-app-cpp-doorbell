@@ -1,4 +1,5 @@
 #include "./uart.h"
+#include "../exceptions/exceptions.h"
 
 namespace sabre::esp32
 {
@@ -29,46 +30,38 @@ namespace sabre::esp32
                                      }};
 
         // Install UART driver
-        if (uart_driver_install(_port, BUF_SIZE * 2, 0, 0, NULL, 0) != ESP_OK)
-        {
-            // std::cerr << "Failed to install UART driver" << std::endl;
-            //  TODO: Exception
-            return;
-        }
+        throw_if_esp_err(
+            uart_driver_install(_port, BUF_SIZE * 2, 0, 0, NULL, 0),
+            "Failed to install UART driver");
 
         // Configure UART parameters
-        if (uart_param_config(_port, &uart_config) != ESP_OK)
-        {
-            // std::cerr << "Failed to configure UART parameters" << std::endl;
-            //  TODO: Exception
-            return;
-        }
+        throw_if_esp_err(uart_param_config(_port, &uart_config),
+                         "Failed to configure UART parameters");
 
         // Set UART pins
-        if (uart_set_pin(_port, _tx_pin, _rx_pin, UART_PIN_NO_CHANGE,
-                         UART_PIN_NO_CHANGE) != ESP_OK)
-        {
-            // std::cerr << "Failed to set UART pins" << std::endl;
-            //  TODO: Exception
-            return;
-        }
-
+        throw_if_esp_err(uart_set_pin(_port, _tx_pin, _rx_pin,
+                                      UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE),
+                         "Failed to set UART pins");
         _is_initialized = true;
     }
 
     int UART::get_bytes(char *data, size_t length, uint32_t timeout) const
     {
-        // TODO: Make the wait time configurable
-        return uart_read_bytes(_port, data, length, pdMS_TO_TICKS(timeout));
+        int bytes_read =
+            uart_read_bytes(_port, data, length, pdMS_TO_TICKS(timeout));
+        throw_if_negative_value(bytes_read, "Failed to read bytes from UART");
+        return bytes_read;
     }
 
     int UART::write_byte(char data) const
     {
-        return uart_write_bytes(_port, &data, 1);
+        int bytes_written = uart_write_bytes(_port, &data, 1);
+        throw_if_negative_value(bytes_written, "Failed to write byte to UART");
+        return bytes_written;
     }
 
     void UART::flush()
     {
-        uart_flush_input(_port);
+        throw_if_esp_err(uart_flush_input(_port), "Failed to flush UART input");
     }
 } // namespace sabre::esp32

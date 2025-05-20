@@ -1,4 +1,5 @@
 #include "./output_gpio.h"
+#include "../exceptions/exceptions.h"
 #include <driver/gpio.h>
 
 namespace sabre::esp32
@@ -7,36 +8,30 @@ namespace sabre::esp32
         : _pin_number(pin_number),
           _gpio_num(static_cast<gpio_num_t>(pin_number))
     {
-        gpio_set_direction(_gpio_num, GPIO_MODE_OUTPUT);
-    }
-
-    void OutputGPIO::set_as_output()
-    {
-        gpio_set_direction(_gpio_num, GPIO_MODE_OUTPUT);
-    }
-
-    void OutputGPIO::set_as_input()
-    {
-        gpio_set_direction(_gpio_num, GPIO_MODE_INPUT);
+        throw_if_esp_err(gpio_set_direction(_gpio_num, GPIO_MODE_OUTPUT),
+                         "Failed to set GPIO direction");
     }
 
     void OutputGPIO::reset()
     {
-        gpio_reset_pin(_gpio_num);
+        throw_if_esp_err(gpio_reset_pin(_gpio_num), "Failed to reset GPIO");
     }
 
     void OutputGPIO::set_high()
     {
-        gpio_set_level(_gpio_num, 1);
+        throw_if_esp_err(gpio_set_level(_gpio_num, 1),
+                         "Failed to set GPIO high");
     }
 
     void OutputGPIO::set_low()
     {
-        gpio_set_level(_gpio_num, 0);
+        throw_if_esp_err(gpio_set_level(_gpio_num, 0),
+                         "Failed to set GPIO low");
     }
 
     void OutputGPIO::set_level(bool level)
     {
-        gpio_set_level(_gpio_num, level ? 1 : 0);
+        throw_if_esp_err(gpio_set_level(_gpio_num, level ? 1 : 0),
+                         "Failed to set GPIO level");
     }
 } // namespace sabre::esp32

@@ -18,8 +18,6 @@ namespace sabre::esp32
         OutputGPIO(int32_t pin_number);
 
         void reset() override;
-        void set_as_output();
-        void set_as_input();
 
         void set_high() override;
         void set_low() override;

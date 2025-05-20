@@ -1,7 +1,7 @@
 #ifndef _SABRE_EXCEPTIONS_H_
 #define _SABRE_EXCEPTIONS_H_
 
-#include <exception>
+#include <stdexcept>
 #include <string>
 
 namespace sabre
