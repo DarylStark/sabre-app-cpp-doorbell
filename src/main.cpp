@@ -13,6 +13,8 @@
 
 #include <driver/gpio.h>
 
+#include <sabre_esp32/exceptions/exceptions.h>
+
 QueueHandle_t interruptQueue;
 
 void very_special_isr_handler(int x)

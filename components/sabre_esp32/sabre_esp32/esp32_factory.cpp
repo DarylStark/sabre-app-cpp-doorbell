@@ -1,4 +1,5 @@
 #include "./esp32_factory.h"
+#include "exceptions/exceptions.h"
 
 namespace sabre::esp32
 {
