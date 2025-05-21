@@ -5,6 +5,7 @@ idf_component_register(
         sabre/gpio/composite_input_gpio.cpp
         sabre/gpio/composite_output_gpio.cpp
         sabre/uart/uart_output_stream_buffer.cpp
+        sabre/logging/logging.cpp
     INCLUDE_DIRS
         "."
 )

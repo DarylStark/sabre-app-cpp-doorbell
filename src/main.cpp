@@ -15,6 +15,10 @@
 
 #include <sabre_esp32/exceptions/exceptions.h>
 
+#include <sabre/logging/logging.h>
+
+#include <iostream>
+
 QueueHandle_t interruptQueue;
 
 void very_special_isr_handler(int x)
@@ -95,13 +99,28 @@ public:
 
 extern "C"
 {
+    // void app_main(void)
+    // {
+    //     interruptQueue = xQueueCreate(10, sizeof(int));
+    //     gpio_install_isr_service(0); // TODO: Move to Application class
+    //     Application app(std::make_shared<sabre::esp32::ESP32Factory>());
+    //     app.run_loop();
+
+    //     return;
+    // }
+
     void app_main(void)
     {
-        interruptQueue = xQueueCreate(10, sizeof(int));
-        gpio_install_isr_service(0); // TODO: Move to Application class
-        Application app(std::make_shared<sabre::esp32::ESP32Factory>());
-        app.run_loop();
+        using namespace sabre;
 
-        return;
+        Logging::set_level(LoggingLevel::ERROR);
+        Logging::debug("", "Debug message");
+        Logging::info("", "Info message");
+        Logging::notice("", "Notice message");
+        Logging::warning("", "Warning message");
+        Logging::error("", "Error message");
+        Logging::critical("", "Critical message");
+        Logging::alert("", "Alert message");
+        Logging::emergency("", "Emergency message");
     }
 }
