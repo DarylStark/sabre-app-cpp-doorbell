@@ -1,5 +1,5 @@
-#ifndef _SABRE_ESP32_INPUT_GPIO_H_
-#define _SABRE_ESP32_INPUT_GPIO_H_
+#ifndef SABRE_ESP32_INPUT_GPIO_H
+#define SABRE_ESP32_INPUT_GPIO_H
 
 #include <cstdint>
 #include <driver/gpio.h>
@@ -34,4 +34,4 @@ namespace sabre::esp32
     };
 } // namespace sabre::esp32
 
-#endif // _SABRE_ESP32_INPUT_GPIO_H_
+#endif // SABRE_ESP32_INPUT_GPIO_H

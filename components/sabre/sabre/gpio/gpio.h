@@ -1,5 +1,5 @@
-#ifndef _SABRE_GPIO_H_
-#define _SABRE_GPIO_H_
+#ifndef SABRE_GPIO_H
+#define SABRE_GPIO_H
 
 namespace sabre
 {
@@ -13,4 +13,4 @@ namespace sabre
     };
 }; // namespace sabre
 
-#endif // _SABRE_GPIO_H_
+#endif // SABRE_GPIO_H

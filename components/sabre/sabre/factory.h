@@ -1,5 +1,5 @@
-#ifndef _SABRE_FACTORY_H_
-#define _SABRE_FACTORY_H_
+#ifndef SABRE_FACTORY_H
+#define SABRE_FACTORY_H
 
 #include "./uart/uart.h"
 #include "./uart/uart_output_stream_buffer.h"
@@ -32,4 +32,4 @@ namespace sabre
 
 } // namespace sabre
 
-#endif // _SABRE_FACTORY_H_
+#endif // SABRE_FACTORY_H

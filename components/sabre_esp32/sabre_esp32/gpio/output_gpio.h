@@ -1,5 +1,5 @@
-#ifndef _SABRE_ESP32_OUTPUT_GPIO_H_
-#define _SABRE_ESP32_OUTPUT_GPIO_H_
+#ifndef SABRE_ESP32_OUTPUT_GPIO_H
+#define SABRE_ESP32_OUTPUT_GPIO_H
 
 #include <cstdint>
 #include <driver/gpio.h>
@@ -25,4 +25,4 @@ namespace sabre::esp32
     };
 } // namespace sabre::esp32
 
-#endif
+#endif // SABRE_ESP32_OUTPUT_GPIO_H

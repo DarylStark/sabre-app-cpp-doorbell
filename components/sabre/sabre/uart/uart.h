@@ -1,5 +1,5 @@
-#ifndef _SABRE_UART_H_
-#define _SABRE_UART_H_
+#ifndef SABRE_UART_H
+#define SABRE_UART_H
 
 #include <cstddef> // For size_t
 #include <cstdint> // For uint32_t

@@ -1,5 +1,5 @@
-#ifndef _SABRE_ESP32_FACTORY_H_
-#define _SABRE_ESP32_FACTORY_H_
+#ifndef SABRE_ESP32_FACTORY_H
+#define SABRE_ESP32_FACTORY_H
 
 #include "./gpio/input_gpio.h"
 #include "./gpio/output_gpio.h"
@@ -26,4 +26,4 @@ namespace sabre::esp32
     };
 } // namespace sabre::esp32
 
-#endif /* _SABRE_ESP32_FACTORY_H_ */
+#endif /* SABRE_ESP32_FACTORY_H */

@@ -1,5 +1,5 @@
-#ifndef _SABRE_UART_OUTPUT_STREAM_BUFFER_H_
-#define _SABRE_UART_OUTPUT_STREAM_BUFFER_H_
+#ifndef SABRE_UART_OUTPUT_STREAM_BUFFER_H
+#define SABRE_UART_OUTPUT_STREAM_BUFFER_H
 
 #include "./uart.h"
 #include <memory>
@@ -29,4 +29,4 @@ namespace sabre
     };
 } // namespace sabre
 
-#endif // _SABRE_UART_OUTPUT_STREAM_BUFFER_H
+#endif // SABRE_UART_OUTPUT_STREAM_BUFFER_H

@@ -1,5 +1,5 @@
-#ifndef _SABRE_ESP32_EXCEPTIONS_H_
-#define _SABRE_ESP32_EXCEPTIONS_H_
+#ifndef SABRE_ESP32_EXCEPTIONS_H
+#define SABRE_ESP32_EXCEPTIONS_H
 
 #include <sabre/exceptions/exceptions.h>
 
@@ -12,8 +12,9 @@ namespace sabre::esp32
     };
 
     /**
-     * @brief Throws an ESP_IDF_Error if the provided esp_err_t value is not ESP_OK.
-     * 
+     * @brief Throws an ESP_IDF_Error if the provided esp_err_t value is not
+     * ESP_OK.
+     *
      * @param err The esp_err_t value to check.
      * @param msg The error message to include in the exception if thrown.
      * @throws ESP_IDF_Error if err is not ESP_OK.
@@ -26,7 +27,7 @@ namespace sabre::esp32
 
     /**
      * @brief Throws an ESP_IDF_Error if the provided value is negative.
-     * 
+     *
      * @param value The integer value to check.
      * @param msg The error message to include in the exception if thrown.
      * @throws ESP_IDF_Error if value is less than 0.
@@ -38,4 +39,4 @@ namespace sabre::esp32
     }
 } // namespace sabre::esp32
 
-#endif
+#endif // SABRE_ESP32_EXCEPTIONS_H
