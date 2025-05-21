@@ -1,5 +1,5 @@
-#ifndef _SABRE_EXCEPTIONS_H_
-#define _SABRE_EXCEPTIONS_H_
+#ifndef SABRE_EXCEPTIONS_H
+#define SABRE_EXCEPTIONS_H
 
 #include <stdexcept>
 #include <string>
@@ -25,4 +25,4 @@ namespace sabre
     };
 } // namespace sabre
 
-#endif // _SABRE_EXCEPTIONS_H_
+#endif // SABRE_EXCEPTIONS_H
