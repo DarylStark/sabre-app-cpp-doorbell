@@ -28,6 +28,14 @@ namespace sabre
     public:
         Logger(const std::string &name);
         void log(const LoggingLevel level, const std::string &message);
+        void debug(const std::string &message);
+        void info(const std::string &message);
+        void notice(const std::string &message);
+        void warning(const std::string &message);
+        void error(const std::string &message);
+        void critical(const std::string &message);
+        void alert(const std::string &message);
+        void emergency(const std::string &message);
     };
 
     class LogHandler
@@ -50,22 +58,6 @@ namespace sabre
         static void log(const LoggingLevel level,
                         const std::string &logger_name,
                         const std::string &message);
-        static void debug(const std::string &logger_name,
-                          const std::string &message);
-        static void info(const std::string &logger_name,
-                         const std::string &message);
-        static void notice(const std::string &logger_name,
-                           const std::string &message);
-        static void warning(const std::string &logger_name,
-                            const std::string &message);
-        static void error(const std::string &logger_name,
-                          const std::string &message);
-        static void critical(const std::string &logger_name,
-                             const std::string &message);
-        static void alert(const std::string &logger_name,
-                          const std::string &message);
-        static void emergency(const std::string &logger_name,
-                              const std::string &message);
         static void add_handler(std::shared_ptr<LogHandler> handler);
     };
 }; // namespace sabre

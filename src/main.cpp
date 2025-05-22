@@ -17,6 +17,8 @@
 
 #include <sabre/logging/logging.h>
 
+#include <sabre/logging/log_handlers.h>
+
 #include <iostream>
 
 QueueHandle_t interruptQueue;
@@ -45,6 +47,9 @@ class Application
 {
 private:
     std::shared_ptr<sabre::Factory> _os_factory;
+
+    // Logging
+    std::shared_ptr<sabre::Logger> _logger;
 
     // For output
     std::shared_ptr<sabre::UARTStreamBuf> _uart_stream_buf;
@@ -78,20 +83,33 @@ public:
     Application(std::shared_ptr<sabre::Factory> factory)
         : _os_factory(factory), _u0o(nullptr), _u2o(nullptr)
     {
+        vTaskDelay(100 / portTICK_PERIOD_MS);
         // Configure output stream
         _uart_stream_buf =
             _os_factory->create_uart_output_stream_buffer(0, 115200, 1, 3, 8);
         _u0o.rdbuf(_uart_stream_buf.get());
 
+        // Configure logging
+        auto _log_handler = std::make_shared<sabre::OStreamLogHandler>(_u0o);
+        _logger = std::make_shared<sabre::Logger>("APP");
+        sabre::Logging::set_level(sabre::LoggingLevel::DEBUG);
+        sabre::Logging::add_handler(_log_handler);
+
+        _logger->info("Starting application...");
+
+        // Configure GPIOs
         _led_gpio = _get_led_gpio();
         _button = _get_button_gpio();
 
+        // Create FreeRTOS tasks
         xTaskCreate(led_control_task, "LED_Control_Task", 2048, NULL, 1, NULL);
+
+        _logger->info("Bootup done.");
     }
 
     void run_loop()
     {
-        _u0o << "\nBooted!!" << std::endl;
+        _logger->info("Starting loop");
         while (true)
             vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
@@ -99,92 +117,13 @@ public:
 
 extern "C"
 {
-    // void app_main(void)
-    // {
-    //     interruptQueue = xQueueCreate(10, sizeof(int));
-    //     gpio_install_isr_service(0); // TODO: Move to Application class
-    //     Application app(std::make_shared<sabre::esp32::ESP32Factory>());
-    //     app.run_loop();
-
-    //     return;
-    // }
-
-    class OStreamLogHandler : public sabre::LogHandler
-    {
-    private:
-        std::ostream &_stream;
-
-    public:
-        OStreamLogHandler(std::ostream &stream) : _stream(stream) {}
-        void handle_log(const sabre::LoggingLevel level,
-                        const std::string &logger_name,
-                        const std::string &message) override
-        {
-            _stream << "HANDLER: [" << logger_name << "] " << message
-                    << std::endl;
-        }
-    };
-
-    class LogBufferHandler : public sabre::LogHandler
-    {
-    private:
-        std::vector<std::string> _buffer;
-        size_t _max_size;
-
-    public:
-        LogBufferHandler(size_t size) : _buffer(0), _max_size(size)
-        {
-            _buffer.reserve(size);
-        }
-
-        void handle_log(const sabre::LoggingLevel level,
-                        const std::string &logger_name,
-                        const std::string &message) override
-        {
-            _buffer.push_back("[" + logger_name + "] " + message);
-            if (_buffer.size() > _max_size)
-                _buffer.erase(_buffer.begin());
-        }
-
-        const std::vector<std::string> &get_buffer() const
-        {
-            return _buffer;
-        }
-    };
-
     void app_main(void)
     {
-        using namespace sabre;
+        interruptQueue = xQueueCreate(10, sizeof(int));
+        gpio_install_isr_service(0); // TODO: Move to Application class
+        Application app(std::make_shared<sabre::esp32::ESP32Factory>());
+        app.run_loop();
 
-        std::shared_ptr<LogBufferHandler> log_buffer_handler =
-            std::make_shared<LogBufferHandler>(8);
-
-        Logging::set_level(LoggingLevel::DEBUG);
-        Logging::add_handler(std::make_shared<OStreamLogHandler>(std::cout));
-        Logging::add_handler(log_buffer_handler);
-
-        Logger logger = sabre::Logger("app_main");
-        Logger logger2 = sabre::Logger("APP");
-
-        logger.log(LoggingLevel::DEBUG, "Debug message");
-        logger2.log(LoggingLevel::EMERGENCY, "Emergency message");
-        logger.log(LoggingLevel::INFO, "Log handler 1");
-        logger2.log(LoggingLevel::INFO, "Log handler 2");
-        logger.log(LoggingLevel::INFO, "Log handler 3");
-        logger2.log(LoggingLevel::INFO, "Log handler 4");
-        logger.log(LoggingLevel::INFO, "Log handler 5");
-        logger2.log(LoggingLevel::INFO, "Log handler 6");
-        logger.log(LoggingLevel::INFO, "Log handler 7");
-        logger2.log(LoggingLevel::INFO, "Log handler 8");
-        logger.log(LoggingLevel::INFO, "Log handler 9");
-        logger2.log(LoggingLevel::INFO, "Log handler 10");
-        logger.log(LoggingLevel::INFO, "Log handler 11");
-        logger2.log(LoggingLevel::INFO, "Log handler 12");
-        logger.log(LoggingLevel::INFO, "Log handler 13");
-
-        std::endl(std::cout);
-
-        for (const auto &log_message : log_buffer_handler->get_buffer())
-            std::cout << "BUFFER: " << log_message << std::endl;
+        return;
     }
 }
