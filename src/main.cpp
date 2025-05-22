@@ -83,6 +83,7 @@ public:
     Application(std::shared_ptr<sabre::Factory> factory)
         : _os_factory(factory), _u0o(nullptr), _u2o(nullptr)
     {
+        // Wait a bit to make sure the bootloader logging is done
         vTaskDelay(100 / portTICK_PERIOD_MS);
 
         // Configure output stream
