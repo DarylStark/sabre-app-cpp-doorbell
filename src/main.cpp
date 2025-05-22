@@ -15,6 +15,12 @@
 
 #include <sabre_esp32/exceptions/exceptions.h>
 
+#include <sabre/logging/logging.h>
+
+#include <sabre/logging/log_handlers.h>
+
+#include <iostream>
+
 QueueHandle_t interruptQueue;
 
 void very_special_isr_handler(int x)
@@ -41,6 +47,9 @@ class Application
 {
 private:
     std::shared_ptr<sabre::Factory> _os_factory;
+
+    // Logging
+    std::shared_ptr<sabre::Logger> _logger;
 
     // For output
     std::shared_ptr<sabre::UARTStreamBuf> _uart_stream_buf;
@@ -74,20 +83,36 @@ public:
     Application(std::shared_ptr<sabre::Factory> factory)
         : _os_factory(factory), _u0o(nullptr), _u2o(nullptr)
     {
+        // Wait a bit to make sure the bootloader logging is done
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+
         // Configure output stream
         _uart_stream_buf =
             _os_factory->create_uart_output_stream_buffer(0, 115200, 1, 3, 8);
         _u0o.rdbuf(_uart_stream_buf.get());
 
+        // Configure logging
+        auto ostream_log_handler =
+            std::make_shared<sabre::OStreamLogHandler>(_u0o);
+        _logger = std::make_shared<sabre::Logger>("APP");
+        sabre::Logging::set_level(sabre::LoggingLevel::DEBUG);
+        sabre::Logging::add_handler(ostream_log_handler);
+
+        _logger->info("Starting application...");
+
+        // Configure GPIOs
         _led_gpio = _get_led_gpio();
         _button = _get_button_gpio();
 
+        // Create FreeRTOS tasks
         xTaskCreate(led_control_task, "LED_Control_Task", 2048, NULL, 1, NULL);
+
+        _logger->info("Bootup done.");
     }
 
     void run_loop()
     {
-        _u0o << "\nBooted!!" << std::endl;
+        _logger->info("Starting loop");
         while (true)
             vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
