@@ -6,6 +6,13 @@ namespace sabre
 {
     LoggingLevel Logging::_level = LoggingLevel::NOTSET;
 
+    Logger::Logger(const std::string &name) : _name(name) {}
+
+    void Logger::log(const LoggingLevel level, const std::string &message)
+    {
+        Logging::log(level, _name, message);
+    }
+
     void Logging::set_level(LoggingLevel level)
     {
         _level = level;

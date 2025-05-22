@@ -1,6 +1,7 @@
 #ifndef SABRE_LOGGING_H
 #define SABRE_LOGGING_H
 
+#include <forward_list>
 #include <string>
 
 namespace sabre
@@ -16,6 +17,16 @@ namespace sabre
         NOTICE,
         INFO,
         DEBUG,
+    };
+
+    class Logger
+    {
+    private:
+        std::string _name;
+
+    public:
+        Logger(const std::string &name);
+        void log(const LoggingLevel level, const std::string &message);
     };
 
     class Logging
@@ -42,7 +53,7 @@ namespace sabre
         static void critical(const std::string &logger_name,
                              const std::string &message);
         static void alert(const std::string &logger_name,
-                              const std::string &message);
+                          const std::string &message);
         static void emergency(const std::string &logger_name,
                               const std::string &message);
     };

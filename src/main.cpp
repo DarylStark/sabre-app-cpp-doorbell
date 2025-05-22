@@ -113,14 +113,10 @@ extern "C"
     {
         using namespace sabre;
 
-        Logging::set_level(LoggingLevel::ERROR);
-        Logging::debug("", "Debug message");
-        Logging::info("", "Info message");
-        Logging::notice("", "Notice message");
-        Logging::warning("", "Warning message");
-        Logging::error("", "Error message");
-        Logging::critical("", "Critical message");
-        Logging::alert("", "Alert message");
-        Logging::emergency("", "Emergency message");
+        Logging::set_level(LoggingLevel::DEBUG);
+        Logger logger = sabre::Logger("app_main");
+
+        logger.log(LoggingLevel::DEBUG, "Debug message");
+        logger.log(LoggingLevel::EMERGENCY, "Emergency message");
     }
 }
