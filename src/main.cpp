@@ -84,16 +84,18 @@ public:
         : _os_factory(factory), _u0o(nullptr), _u2o(nullptr)
     {
         vTaskDelay(100 / portTICK_PERIOD_MS);
+
         // Configure output stream
         _uart_stream_buf =
             _os_factory->create_uart_output_stream_buffer(0, 115200, 1, 3, 8);
         _u0o.rdbuf(_uart_stream_buf.get());
 
         // Configure logging
-        auto _log_handler = std::make_shared<sabre::OStreamLogHandler>(_u0o);
+        auto ostream_log_handler =
+            std::make_shared<sabre::OStreamLogHandler>(_u0o);
         _logger = std::make_shared<sabre::Logger>("APP");
         sabre::Logging::set_level(sabre::LoggingLevel::DEBUG);
-        sabre::Logging::add_handler(_log_handler);
+        sabre::Logging::add_handler(ostream_log_handler);
 
         _logger->info("Starting application...");
 
