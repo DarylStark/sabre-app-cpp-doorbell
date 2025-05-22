@@ -2,6 +2,7 @@
 #define SABRE_LOGGING_H
 
 #include <forward_list>
+#include <memory>
 #include <string>
 
 namespace sabre
@@ -29,10 +30,19 @@ namespace sabre
         void log(const LoggingLevel level, const std::string &message);
     };
 
+    class LogHandler
+    {
+    public:
+        virtual void handle_log(const LoggingLevel level,
+                                const std::string &logger_name,
+                                const std::string &message) = 0;
+    };
+
     class Logging
     {
     private:
         static LoggingLevel _level;
+        static std::forward_list<std::shared_ptr<LogHandler>> _handlers;
 
     public:
         static void set_level(LoggingLevel level);
@@ -56,6 +66,7 @@ namespace sabre
                           const std::string &message);
         static void emergency(const std::string &logger_name,
                               const std::string &message);
+        static void add_handler(std::shared_ptr<LogHandler> handler);
     };
 }; // namespace sabre
 

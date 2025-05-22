@@ -1,12 +1,11 @@
 #include "logging.h"
 
-#include <iostream>
-
 namespace sabre
 {
     LoggingLevel Logging::_level = LoggingLevel::NOTSET;
 
     Logger::Logger(const std::string &name) : _name(name) {}
+    std::forward_list<std::shared_ptr<LogHandler>> Logging::_handlers;
 
     void Logger::log(const LoggingLevel level, const std::string &message)
     {
@@ -27,7 +26,8 @@ namespace sabre
                       const std::string &message)
     {
         if (level <= _level)
-            std::cout << "[" << logger_name << "] " << message << std::endl;
+            for (const auto &handler : _handlers)
+                handler->handle_log(level, logger_name, message);
     }
 
     void Logging::debug(const std::string &logger_name,
@@ -76,5 +76,10 @@ namespace sabre
                             const std::string &message)
     {
         Logging::log(LoggingLevel::EMERGENCY, logger_name, message);
+    }
+
+    void Logging::add_handler(std::shared_ptr<LogHandler> handler)
+    {
+        _handlers.push_front(handler);
     }
 } // namespace sabre

@@ -109,14 +109,82 @@ extern "C"
     //     return;
     // }
 
+    class OStreamLogHandler : public sabre::LogHandler
+    {
+    private:
+        std::ostream &_stream;
+
+    public:
+        OStreamLogHandler(std::ostream &stream) : _stream(stream) {}
+        void handle_log(const sabre::LoggingLevel level,
+                        const std::string &logger_name,
+                        const std::string &message) override
+        {
+            _stream << "HANDLER: [" << logger_name << "] " << message
+                    << std::endl;
+        }
+    };
+
+    class LogBufferHandler : public sabre::LogHandler
+    {
+    private:
+        std::vector<std::string> _buffer;
+        size_t _max_size;
+
+    public:
+        LogBufferHandler(size_t size) : _buffer(0), _max_size(size)
+        {
+            _buffer.reserve(size);
+        }
+
+        void handle_log(const sabre::LoggingLevel level,
+                        const std::string &logger_name,
+                        const std::string &message) override
+        {
+            _buffer.push_back("[" + logger_name + "] " + message);
+            if (_buffer.size() > _max_size)
+                _buffer.erase(_buffer.begin());
+        }
+
+        const std::vector<std::string> &get_buffer() const
+        {
+            return _buffer;
+        }
+    };
+
     void app_main(void)
     {
         using namespace sabre;
 
+        std::shared_ptr<LogBufferHandler> log_buffer_handler =
+            std::make_shared<LogBufferHandler>(8);
+
         Logging::set_level(LoggingLevel::DEBUG);
+        Logging::add_handler(std::make_shared<OStreamLogHandler>(std::cout));
+        Logging::add_handler(log_buffer_handler);
+
         Logger logger = sabre::Logger("app_main");
+        Logger logger2 = sabre::Logger("APP");
 
         logger.log(LoggingLevel::DEBUG, "Debug message");
-        logger.log(LoggingLevel::EMERGENCY, "Emergency message");
+        logger2.log(LoggingLevel::EMERGENCY, "Emergency message");
+        logger.log(LoggingLevel::INFO, "Log handler 1");
+        logger2.log(LoggingLevel::INFO, "Log handler 2");
+        logger.log(LoggingLevel::INFO, "Log handler 3");
+        logger2.log(LoggingLevel::INFO, "Log handler 4");
+        logger.log(LoggingLevel::INFO, "Log handler 5");
+        logger2.log(LoggingLevel::INFO, "Log handler 6");
+        logger.log(LoggingLevel::INFO, "Log handler 7");
+        logger2.log(LoggingLevel::INFO, "Log handler 8");
+        logger.log(LoggingLevel::INFO, "Log handler 9");
+        logger2.log(LoggingLevel::INFO, "Log handler 10");
+        logger.log(LoggingLevel::INFO, "Log handler 11");
+        logger2.log(LoggingLevel::INFO, "Log handler 12");
+        logger.log(LoggingLevel::INFO, "Log handler 13");
+
+        std::endl(std::cout);
+
+        for (const auto &log_message : log_buffer_handler->get_buffer())
+            std::cout << "BUFFER: " << log_message << std::endl;
     }
 }
