@@ -22,4 +22,10 @@ namespace sabre::esp32
     {
         return std::make_shared<OutputGPIO>(pin);
     }
+
+    std::shared_ptr<sabre::WifiStation>
+    ESP32Factory::create_wifi_station() const
+    {
+        return std::make_shared<WifiStation>();
+    }
 } // namespace sabre::esp32

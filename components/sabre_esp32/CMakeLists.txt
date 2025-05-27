@@ -3,6 +3,7 @@ idf_component_register(
         sabre_esp32/uart/uart.cpp
         sabre_esp32/gpio/input_gpio.cpp
         sabre_esp32/gpio/output_gpio.cpp
+        sabre_esp32/wifi/wifi_station.cpp
         sabre_esp32/esp32_factory.cpp
     INCLUDE_DIRS
         "." 
@@ -11,4 +12,6 @@ idf_component_register(
     REQUIRES
         esp_driver_uart
         esp_driver_gpio
+        esp_wifi
+        nvs_flash
 )
