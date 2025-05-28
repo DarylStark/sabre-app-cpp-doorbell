@@ -24,6 +24,8 @@
 #include <sabre/generic/ipv4_address.h>
 #include <sabre_esp32/wifi/wifi_station.h>
 
+#include <sabre_esp32/wifi/wifi_soft_ap.h>
+
 QueueHandle_t interruptQueue;
 
 void very_special_isr_handler(int x)
@@ -64,6 +66,8 @@ private:
     std::shared_ptr<sabre::InputGPIO> _button;
 
     std::shared_ptr<sabre::WifiStation> _wifi_station;
+
+    std::shared_ptr<sabre::WifiSoftAP> _wifi_soft_ap;
 
 protected:
     std::shared_ptr<sabre::OutputGPIO> _get_led_gpio() const
@@ -106,9 +110,9 @@ public:
         _logger->info("Starting application...");
 
         // Configure WiFi
-        _wifi_station = _os_factory->create_wifi_station();
-        _wifi_station->init();
-        _wifi_station->connect("wifi_ssd", "wifi_password");
+        _wifi_soft_ap = std::make_shared<sabre::esp32::WifiSoftAP>();
+        _wifi_soft_ap->init();
+        _wifi_soft_ap->start("ESP32-test", "testtest");
 
         // Configure GPIOs
         _led_gpio = _get_led_gpio();

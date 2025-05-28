@@ -4,6 +4,7 @@ idf_component_register(
         sabre_esp32/gpio/input_gpio.cpp
         sabre_esp32/gpio/output_gpio.cpp
         sabre_esp32/wifi/wifi_station.cpp
+        sabre_esp32/wifi/wifi_soft_ap.cpp
         sabre_esp32/esp32_factory.cpp
     INCLUDE_DIRS
         "." 
