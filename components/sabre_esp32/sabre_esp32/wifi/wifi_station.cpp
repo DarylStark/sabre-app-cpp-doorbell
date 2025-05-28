@@ -153,4 +153,9 @@ namespace sabre::esp32
         esp_wifi_deinit();
         esp_netif_deinit();
     }
+
+    bool WifiStation::is_connected() const
+    {
+        return this->_connected;
+    }
 } // namespace sabre::esp32

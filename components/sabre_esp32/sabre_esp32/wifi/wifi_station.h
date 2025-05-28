@@ -30,6 +30,8 @@ namespace sabre::esp32
         void stop() override;
         void deinitialize() override;
 
+        bool is_connected() const;
+
         // Handlers for the `main event loop`
         void wifi_event_handler(esp_event_base_t event_base, int32_t event_id,
                                 void *event_data);

@@ -14,6 +14,8 @@ namespace sabre
         virtual void disconnect() = 0;
         virtual void stop() = 0;
         virtual void deinitialize() = 0;
+
+        virtual bool is_connected() const = 0;
     };
 } // namespace sabre
 
