@@ -31,22 +31,15 @@ extern "C"
 
 namespace sabre::esp32
 {
-    WifiStation::WifiStation() : _logger("WifiStation") {}
+    WifiStation::WifiStation()
+        : _wifi_instance(Wifi::get_instance()), _logger("WifiStation")
+    {
+    }
 
     void WifiStation::wifi_event_handler(esp_event_base_t event_base,
                                          int32_t event_id, void *event_data)
     {
-        if (event_id == WIFI_EVENT_STA_START)
-        {
-            _logger.debug("Service started");
-            _wifi_started = true;
-        }
-        else if (event_id == WIFI_EVENT_STA_STOP)
-        {
-            _logger.debug("Service stopped");
-            _wifi_started = false;
-        }
-        else if (event_id == WIFI_EVENT_STA_CONNECTED)
+        if (event_id == WIFI_EVENT_STA_CONNECTED)
         {
             _logger.debug("Connected");
             _connected = true;
@@ -84,19 +77,12 @@ namespace sabre::esp32
 
     void WifiStation::init()
     {
-        esp_err_t ret = nvs_flash_init();
-        if (ret == ESP_ERR_NVS_NO_FREE_PAGES ||
-            ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
-        {
-            nvs_flash_erase();
-            nvs_flash_init();
-        }
-        esp_netif_init();
-        esp_event_loop_create_default();
+        if (_initialized)
+            return;
+
+        _wifi_instance->init();
+
         esp_netif_create_default_wifi_sta();
-
-        esp_wifi_init(&_wifi_init_config);
-
         esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID,
                                    &_wifi_event_handler, this);
         esp_event_handler_register(IP_EVENT, IP_EVENT_ETH_GOT_IP,
@@ -116,13 +102,10 @@ namespace sabre::esp32
         std::strcpy((char *)_wifi_config.sta.ssid, ssid.c_str());
         std::strcpy((char *)_wifi_config.sta.password, password.c_str());
 
-        esp_wifi_set_mode(WIFI_MODE_STA);
+        _wifi_instance->add_mode(WifiMode::STATION);
         esp_wifi_set_config(WIFI_IF_STA, &_wifi_config);
 
-        if (!_wifi_started)
-            esp_wifi_start();
-        while (!_wifi_started)
-            vTaskDelay(10 / portTICK_PERIOD_MS);
+        _wifi_instance->start();
         disconnect();
 
         esp_wifi_connect();
@@ -136,22 +119,16 @@ namespace sabre::esp32
 
     void WifiStation::stop()
     {
-        esp_wifi_stop();
-        _wifi_started = false;
+        _wifi_instance->remove_mode(WifiMode::STATION);
     }
 
     void WifiStation::deinitialize()
     {
+        _wifi_instance->deintialize();
         esp_event_handler_unregister(WIFI_EVENT, ESP_EVENT_ANY_ID,
                                      &_wifi_event_handler);
-        esp_event_handler_unregister(IP_EVENT, IP_EVENT_ETH_GOT_IP,
+        esp_event_handler_unregister(IP_EVENT, ESP_EVENT_ANY_ID,
                                      &_ip_event_handler);
-        esp_event_handler_unregister(IP_EVENT, IP_EVENT_STA_GOT_IP,
-                                     &_ip_event_handler);
-
-        esp_wifi_stop();
-        esp_wifi_deinit();
-        esp_netif_deinit();
     }
 
     bool WifiStation::is_connected() const

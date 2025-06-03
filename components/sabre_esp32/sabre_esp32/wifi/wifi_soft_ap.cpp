@@ -15,48 +15,31 @@ extern "C"
 
 namespace sabre::esp32
 {
-    WifiSoftAP::WifiSoftAP() : _logger("WifiSoftAP") {}
+    WifiSoftAP::WifiSoftAP()
+        : _wifi_instance(Wifi::get_instance()), _logger("WifiSoftAP")
+    {
+    }
 
     void WifiSoftAP::wifi_event_handler(esp_event_base_t event_base,
                                         int32_t event_id, void *event_data)
     {
-        if (event_id == WIFI_EVENT_AP_START)
-        {
-            _wifi_started = true;
-            _logger.info("Service started");
-        }
-        else if (event_id == WIFI_EVENT_AP_STOP)
-        {
-            _wifi_started = false;
-            _logger.info("Service stopped");
-        }
-        else if (event_id == WIFI_EVENT_AP_STACONNECTED)
-        {
+        if (event_id == WIFI_EVENT_AP_STACONNECTED)
             _logger.info("Client connected");
-        }
         else if (event_id == WIFI_EVENT_AP_STADISCONNECTED)
-        {
             _logger.info("Client disconnected");
-        }
     }
 
     void WifiSoftAP::init()
     {
-        esp_err_t ret = nvs_flash_init();
-        if (ret == ESP_ERR_NVS_NO_FREE_PAGES ||
-            ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
-        {
-            nvs_flash_erase();
-            nvs_flash_init();
-        }
-        esp_netif_init();
-        esp_event_loop_create_default();
+        if (_initialized)
+            return;
+
+        _wifi_instance->init();
+
         esp_netif_create_default_wifi_ap();
-
-        esp_wifi_init(&_wifi_init_config);
-
         esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID,
                                    &_wifi_event_handler_two, this);
+        _initialized = true;
     }
 
     void WifiSoftAP::start(std::string ssid, std::string password)
@@ -67,9 +50,20 @@ namespace sabre::esp32
         _wifi_config.ap.max_connection = 4;
         _wifi_config.ap.authmode = WIFI_AUTH_WPA2_PSK;
 
-        esp_wifi_set_mode(WIFI_MODE_AP);
+        _wifi_instance->add_mode(WifiMode::SOFT_AP);
         esp_wifi_set_config(WIFI_IF_AP, &_wifi_config);
-        if (!_wifi_started)
-            esp_wifi_start();
+        _wifi_instance->start();
+    }
+
+    void WifiSoftAP::stop()
+    {
+        _wifi_instance->remove_mode(WifiMode::SOFT_AP);
+    }
+
+    void WifiSoftAP::deinitialize()
+    {
+        _wifi_instance->deintialize();
+        esp_event_handler_unregister(WIFI_EVENT, ESP_EVENT_ANY_ID,
+                                     &_wifi_event_handler_two);
     }
 } // namespace sabre::esp32

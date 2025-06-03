@@ -110,9 +110,25 @@ public:
         _logger->info("Starting application...");
 
         // Configure WiFi
+        _u0o << "Starting AP mode" << std::endl;
         _wifi_soft_ap = std::make_shared<sabre::esp32::WifiSoftAP>();
         _wifi_soft_ap->init();
         _wifi_soft_ap->start("ESP32-test", "testtest");
+
+        vTaskDelay(5000 / portTICK_PERIOD_MS);
+
+        _u0o << "Starting station mode" << std::endl;
+        _wifi_station = std::make_shared<sabre::esp32::WifiStation>();
+        _wifi_station->init();
+        _wifi_station->connect("SSID", "PASSWORD");
+
+        vTaskDelay(5000 / portTICK_PERIOD_MS);
+        _u0o << "Stopping station mode" << std::endl;
+        _wifi_station->stop();
+
+        vTaskDelay(5000 / portTICK_PERIOD_MS);
+        _u0o << "Stopping AP mode" << std::endl;
+        _wifi_soft_ap->stop();
 
         // Configure GPIOs
         _led_gpio = _get_led_gpio();
