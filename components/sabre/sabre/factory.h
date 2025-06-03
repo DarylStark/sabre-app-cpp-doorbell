@@ -5,6 +5,7 @@
 #include "./uart/uart_output_stream_buffer.h"
 #include "gpio/input_gpio.h"
 #include "gpio/output_gpio.h"
+#include "wifi/wifi_soft_ap.h"
 #include "wifi/wifi_station.h"
 #include <memory>
 #include <ostream>
@@ -31,6 +32,7 @@ namespace sabre
         create_output_gpio(int32_t pin) const = 0;
 
         virtual std::shared_ptr<WifiStation> create_wifi_station() const = 0;
+        virtual std::shared_ptr<WifiSoftAP> create_wifi_soft_ap() const = 0;
     };
 
 } // namespace sabre
