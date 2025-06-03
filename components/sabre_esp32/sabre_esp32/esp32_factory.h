@@ -4,6 +4,8 @@
 #include "./gpio/input_gpio.h"
 #include "./gpio/output_gpio.h"
 #include "./uart/uart.h"
+#include "./wifi/wifi_soft_ap.h"
+#include "./wifi/wifi_station.h"
 #include <map>
 #include <memory>
 #include <sabre/factory.h>
@@ -23,6 +25,8 @@ namespace sabre::esp32
         std::shared_ptr<sabre::InputGPIO> create_input_gpio(int32_t pin) const;
         std::shared_ptr<sabre::OutputGPIO>
         create_output_gpio(int32_t pin) const;
+        std::shared_ptr<sabre::WifiStation> create_wifi_station() const;
+        std::shared_ptr<sabre::WifiSoftAP> create_wifi_soft_ap() const;
     };
 } // namespace sabre::esp32
 

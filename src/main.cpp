@@ -21,6 +21,11 @@
 
 #include <iostream>
 
+#include <sabre/generic/ipv4_address.h>
+#include <sabre_esp32/wifi/wifi_station.h>
+
+#include <sabre_esp32/wifi/wifi_soft_ap.h>
+
 QueueHandle_t interruptQueue;
 
 void very_special_isr_handler(int x)
@@ -59,6 +64,10 @@ private:
 
     std::shared_ptr<sabre::OutputGPIO> _led_gpio;
     std::shared_ptr<sabre::InputGPIO> _button;
+
+    std::shared_ptr<sabre::WifiStation> _wifi_station;
+
+    std::shared_ptr<sabre::WifiSoftAP> _wifi_soft_ap;
 
 protected:
     std::shared_ptr<sabre::OutputGPIO> _get_led_gpio() const
@@ -99,6 +108,27 @@ public:
         sabre::Logging::add_handler(ostream_log_handler);
 
         _logger->info("Starting application...");
+
+        // Configure WiFi
+        _u0o << "Starting AP mode" << std::endl;
+        _wifi_soft_ap = _os_factory->create_wifi_soft_ap();
+        _wifi_soft_ap->init();
+        _wifi_soft_ap->start("ESP32-test", "testtest");
+
+        vTaskDelay(5000 / portTICK_PERIOD_MS);
+
+        _u0o << "Starting station mode" << std::endl;
+        _wifi_station = _os_factory->create_wifi_station();
+        _wifi_station->init();
+        _wifi_station->connect("SSID", "PASSWORD");
+
+        vTaskDelay(5000 / portTICK_PERIOD_MS);
+        _u0o << "Stopping station mode" << std::endl;
+        _wifi_station->stop();
+
+        vTaskDelay(5000 / portTICK_PERIOD_MS);
+        _u0o << "Stopping AP mode" << std::endl;
+        _wifi_soft_ap->stop();
 
         // Configure GPIOs
         _led_gpio = _get_led_gpio();

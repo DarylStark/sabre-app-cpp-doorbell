@@ -7,6 +7,7 @@ idf_component_register(
         sabre/uart/uart_output_stream_buffer.cpp
         sabre/logging/logging.cpp
         sabre/logging/log_handlers.cpp
+        sabre/generic/ipv4_address.cpp
     INCLUDE_DIRS
         "."
 )
