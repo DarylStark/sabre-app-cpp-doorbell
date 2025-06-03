@@ -44,7 +44,7 @@ namespace sabre::esp32
 
         void start();
         void stop(WifiMode mode);
-        void deintialize();
+        void deinitialize();
 
         void add_mode(WifiMode mode);
         void remove_mode(WifiMode mode);

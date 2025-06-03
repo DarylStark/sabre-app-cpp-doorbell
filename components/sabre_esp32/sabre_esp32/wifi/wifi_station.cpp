@@ -123,7 +123,7 @@ namespace sabre::esp32
 
     void WifiStation::deinitialize()
     {
-        _wifi_instance->deintialize();
+        _wifi_instance->deinitialize();
         esp_event_handler_unregister(WIFI_EVENT, ESP_EVENT_ANY_ID,
                                      &_wifi_event_handler);
         esp_event_handler_unregister(IP_EVENT, ESP_EVENT_ANY_ID,

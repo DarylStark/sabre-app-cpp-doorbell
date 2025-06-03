@@ -104,7 +104,7 @@ namespace sabre::esp32
         std::cout << "STARTED" << std::endl;
     }
 
-    void Wifi::deintialize()
+    void Wifi::deinitialize()
     {
         if (_enabled_modes.any())
             return;
