@@ -106,7 +106,6 @@ namespace sabre::esp32
         esp_wifi_set_config(WIFI_IF_STA, &_wifi_config);
 
         _wifi_instance->start();
-        disconnect();
 
         esp_wifi_connect();
     }
