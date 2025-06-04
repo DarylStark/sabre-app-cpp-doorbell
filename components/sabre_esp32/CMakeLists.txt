@@ -7,6 +7,7 @@ idf_component_register(
         sabre_esp32/wifi/wifi_soft_ap.cpp
         sabre_esp32/wifi/wifi.cpp
         sabre_esp32/esp32_factory.cpp
+        sabre_esp32/utility/timed_waiter.cpp
     INCLUDE_DIRS
         "." 
     PRIV_REQUIRES
@@ -16,4 +17,5 @@ idf_component_register(
         esp_driver_gpio
         esp_wifi
         nvs_flash
+        esp_timer
 )
