@@ -154,22 +154,6 @@ extern "C"
 {
     void app_main(void)
     {
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-        std::cout << "Starting!\n";
-        int a = 0;
-        sabre::esp32::TimedWaiter x([&a]() { return a++ == 100; }, 1001, 10);
-        std::cout << "Starting!\n";
-
-        if (x())
-            std::cout << "Success in " << x.get_result_runtime() << " ms\n";
-        else
-            std::cout << "Failed in " << x.get_result_runtime() << " ms\n";
-
-        std::cout << "Done!\n";
-        std::endl(std::cout);
-
-        return;
-
         interruptQueue = xQueueCreate(10, sizeof(int));
         gpio_install_isr_service(0); // TODO: Move to Application class
         Application app(std::make_shared<sabre::esp32::ESP32Factory>());
