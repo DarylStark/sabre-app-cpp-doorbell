@@ -26,6 +26,8 @@
 
 #include <sabre_esp32/wifi/wifi_soft_ap.h>
 
+#include <sabre_esp32/utility/timed_waiter.h>
+
 QueueHandle_t interruptQueue;
 
 void very_special_isr_handler(int x)

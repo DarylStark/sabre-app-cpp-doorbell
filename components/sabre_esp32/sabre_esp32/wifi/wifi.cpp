@@ -1,4 +1,5 @@
 #include "wifi.h"
+#include "../utility/timed_waiter.h"
 #include <esp_event.h>
 #include <esp_netif.h>
 #include <iostream>
@@ -98,10 +99,16 @@ namespace sabre::esp32
 
         std::cout << "STARTING WIFI" << std::endl;
         esp_wifi_start();
-        // TODO: Do we leave this in here?
-        while (!_wifi_started)
-            vTaskDelay(10 / portTICK_PERIOD_MS);
-        std::cout << "STARTED" << std::endl;
+        TimedWaiter wait_for_wifi_start(
+            [this]() { return this->_wifi_started; }, 1000, 10);
+        if (wait_for_wifi_start())
+            std::cout << "STARTED WITHIN "
+                      << wait_for_wifi_start.get_result_runtime() << " ms"
+                      << std::endl;
+        else
+            std::cout << "WIFI NOT STARTED WITHIN "
+                      << wait_for_wifi_start.get_result_runtime() << " ms"
+                      << std::endl;
     }
 
     void Wifi::deinitialize()
