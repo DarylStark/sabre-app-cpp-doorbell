@@ -19,8 +19,6 @@
 
 #include <sabre/logging/log_handlers.h>
 
-#include <iostream>
-
 #include <sabre/generic/ipv4_address.h>
 #include <sabre_esp32/wifi/wifi_station.h>
 
