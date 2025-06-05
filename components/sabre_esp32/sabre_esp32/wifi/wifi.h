@@ -4,6 +4,7 @@
 #include <bitset>
 #include <esp_wifi.h>
 #include <memory>
+#include <sabre/logging/logging.h>
 
 namespace sabre::esp32
 {
@@ -30,6 +31,7 @@ namespace sabre::esp32
         wifi_init_config_t _wifi_init_config = WIFI_INIT_CONFIG_DEFAULT();
 
         std::bitset<2> _enabled_modes;
+        sabre::Logger _logger;
 
         void _set_mode_to_none();
         void _set_mode_to_both();

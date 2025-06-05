@@ -2,7 +2,6 @@
 #include "../utility/timed_waiter.h"
 #include <esp_event.h>
 #include <esp_netif.h>
-#include <iostream>
 #include <nvs_flash.h>
 
 extern "C"
@@ -20,29 +19,29 @@ namespace sabre::esp32
 {
     std::shared_ptr<Wifi> Wifi::_instance = nullptr;
 
-    Wifi::Wifi() {}
+    Wifi::Wifi() : _logger("Wifi") {}
 
     void Wifi::_set_mode_to_none()
     {
-        std::cout << "SETTING MODE TO NULL" << std::endl;
+        _logger.debug("Setting mode to null");
         esp_wifi_set_mode(WIFI_MODE_NULL);
     }
 
     void Wifi::_set_mode_to_both()
     {
-        std::cout << "SETTING MODE TO BOTH" << std::endl;
+        _logger.debug("Setting mode to both (station + soft AP)");
         esp_wifi_set_mode(WIFI_MODE_APSTA);
     }
 
     void Wifi::_set_mode_to_station()
     {
-        std::cout << "SETTING MODE TO STATION" << std::endl;
+        _logger.debug("Setting mode to station");
         esp_wifi_set_mode(WIFI_MODE_STA);
     }
 
     void Wifi::_set_mode_to_soft_ap()
     {
-        std::cout << "SETTING MODE TO SOFTAP" << std::endl;
+        _logger.debug("Setting mode to soft AP");
         esp_wifi_set_mode(WIFI_MODE_AP);
     }
 
@@ -97,18 +96,14 @@ namespace sabre::esp32
         if (_wifi_started)
             return;
 
-        std::cout << "STARTING WIFI" << std::endl;
+        _logger.debug("Starting WiFi");
         esp_wifi_start();
         TimedWaiter wait_for_wifi_start(
             [this]() { return this->_wifi_started; }, 1000, 10);
         if (wait_for_wifi_start())
-            std::cout << "STARTED WITHIN "
-                      << wait_for_wifi_start.get_result_runtime() << " ms"
-                      << std::endl;
+            _logger.debug("WiFi started successfully");
         else
-            std::cout << "WIFI NOT STARTED WITHIN "
-                      << wait_for_wifi_start.get_result_runtime() << " ms"
-                      << std::endl;
+            _logger.error("WiFi not started");
     }
 
     void Wifi::deinitialize()
