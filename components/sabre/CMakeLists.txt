@@ -9,6 +9,7 @@ idf_component_register(
         sabre/logging/log_handlers.cpp
         sabre/generic/ipv4_address.cpp
         sabre/utility/timed_waiter.cpp
+        sabre/service_runner/service_runner.cpp
     INCLUDE_DIRS
         "."
 )
