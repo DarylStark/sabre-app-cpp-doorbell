@@ -2,11 +2,21 @@
 #define SABRE_ESP32_CLIENTS_MQTT_H
 
 #include <mqtt_client.h>
-#include <sabre/clients/mqtt_client.h>
+#include <sabre/clients/mqtt.h>
 #include <string>
 
 namespace sabre::esp32
 {
+    class MQTTTopic : public sabre::MQTTTopic
+    {
+    public:
+        MQTTTopic(sabre::MQTTClient &client, const std::string &topic);
+
+        void publish(const std::string &message,
+                     sabre::MQTTQoS qos = sabre::MQTTQoS::UNDEFINED,
+                     sabre::MQTTRetain retain = sabre::MQTTRetain::UNDEFINED);
+    };
+
     class MQTTClient : public sabre::MQTTClient
     {
     private:
@@ -22,6 +32,11 @@ namespace sabre::esp32
         void stop() override;
 
         bool is_connected() const override;
+
+        void publish(const std::string &topic, const std::string &message,
+                     sabre::MQTTQoS qos, sabre::MQTTRetain retain) override;
+        virtual std::unique_ptr<sabre::MQTTTopic>
+        get_topic(const std::string &topic_name) override;
 
         void handle_event(esp_event_base_t event_base, int32_t event_id,
                           void *event_data);
