@@ -55,7 +55,8 @@ public:
         std::cout << "Wifi connected!" << std::endl;
         vTaskDelay(pdMS_TO_TICKS(5000));
 
-        mqtt.connect("<hostname>", "<client_id>", "<username>", "<password>");
+        mqtt.connect("<mqtt_broker_ip>", "<client_id>", "<username>",
+                     "<password>");
 
         if (!TimedWaiter([&mqtt]() { return mqtt.is_connected(); }, 5000,
                          100)())
@@ -66,10 +67,32 @@ public:
         vTaskDelay(pdMS_TO_TICKS(500));
 
         auto topic = mqtt.get_topic("my_topic/test/test");
+        auto cmd_topic = mqtt.get_topic("my_topic/test/cmd");
         topic->set_default_qos(sabre::MQTTQoS::EXACTLY_ONCE);
         topic->set_default_retain(sabre::MQTTRetain::RETAIN);
         topic->publish("Hi there from my special object as ptr",
                        sabre::MQTTQoS::FIRE_AND_FORGET);
+        mqtt.subscribe(
+            "my_topic/test/receive",
+            [](const sabre::MQTTEvent &e)
+            {
+                std::cout << "Received message on topic: " << e.topic
+                          << std::endl;
+                std::cout << "Message: " << e.data << std::endl;
+            },
+            sabre::MQTTQoS::EXACTLY_ONCE);
+        mqtt.subscribe(
+            "my_topic/test/receive2",
+            [](const sabre::MQTTEvent &e)
+            {
+                std::cout << "Other: " << e.topic << std::endl;
+                std::cout << "OMessage: " << e.data << std::endl;
+            },
+            sabre::MQTTQoS::EXACTLY_ONCE);
+        cmd_topic->subscribe(
+            [](const sabre::MQTTEvent &e)
+            { std::cout << "Command received: " << e.data << std::endl; },
+            sabre::MQTTQoS::EXACTLY_ONCE);
 
         while (true)
             vTaskDelay(pdMS_TO_TICKS(1000));

@@ -23,6 +23,8 @@ namespace sabre::esp32
         bool _connected = false;
         esp_mqtt_client_handle_t _client = nullptr;
 
+        void _run_subscription(esp_mqtt_event_handle_t event_data);
+
     public:
         void connect(const std::string &hostname, const std::string &client_id,
                      const std::string &username,
@@ -35,7 +37,10 @@ namespace sabre::esp32
 
         void publish(const std::string &topic, const std::string &message,
                      sabre::MQTTQoS qos, sabre::MQTTRetain retain) override;
-        virtual std::unique_ptr<sabre::MQTTTopic>
+        void subscribe(const std::string &topic,
+                       std::function<void(const MQTTEvent &)> fn,
+                       sabre::MQTTQoS qos = sabre::MQTTQoS::UNDEFINED) override;
+        std::unique_ptr<sabre::MQTTTopic>
         get_topic(const std::string &topic_name) override;
 
         void handle_event(esp_event_base_t event_base, int32_t event_id,

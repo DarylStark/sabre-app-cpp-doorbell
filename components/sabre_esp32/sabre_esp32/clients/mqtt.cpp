@@ -1,5 +1,7 @@
 #include "mqtt.h"
 
+#include <string>
+
 void _esp32_mqtt_event_handler(void *handler_args, esp_event_base_t base,
                                int32_t event_id, void *event_data)
 {
@@ -77,6 +79,19 @@ namespace sabre::esp32
                                 static_cast<int>(retain));
     }
 
+    void MQTTClient::subscribe(const std::string &topic,
+                               std::function<void(const MQTTEvent &)> fn,
+                               sabre::MQTTQoS qos)
+    {
+        if (qos == sabre::MQTTQoS::UNDEFINED)
+            qos = sabre::MQTTQoS::EXACTLY_ONCE;
+
+        esp_mqtt_client_subscribe(_client, topic.c_str(),
+                                  static_cast<int>(qos));
+
+        sabre::MQTTClient::subscribe(topic, fn, qos);
+    }
+
     bool MQTTClient::is_connected() const
     {
         return _connected;
@@ -88,9 +103,27 @@ namespace sabre::esp32
         return std::make_unique<sabre::esp32::MQTTTopic>(*this, topic_name);
     }
 
+    void MQTTClient::_run_subscription(esp_mqtt_event_handle_t event_data)
+    {
+        std::string topic(event_data->topic, event_data->topic_len);
+        std::string data(event_data->data, event_data->data_len);
+
+        sabre::MQTTEvent mqtt_event{
+            std::string(event_data->topic, event_data->topic_len),
+            std::string(event_data->data, event_data->data_len),
+            static_cast<sabre::MQTTRetain>(event_data->retain),
+            static_cast<sabre::MQTTQoS>(event_data->qos)};
+
+        if (_subscriptions.find(mqtt_event.topic) != _subscriptions.end())
+            _subscriptions[topic](mqtt_event);
+    }
+
     void MQTTClient::handle_event(esp_event_base_t event_base, int32_t event_id,
                                   void *event_data)
     {
+        esp_mqtt_event_handle_t event =
+            static_cast<esp_mqtt_event_handle_t>(event_data);
+
         switch (event_id)
         {
         case MQTT_EVENT_CONNECTED:
@@ -98,6 +131,9 @@ namespace sabre::esp32
             break;
         case MQTT_EVENT_DISCONNECTED:
             _connected = false;
+            break;
+        case MQTT_EVENT_DATA:
+            _run_subscription(event);
             break;
         default:
             break;
