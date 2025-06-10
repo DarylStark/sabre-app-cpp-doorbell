@@ -7,16 +7,6 @@
 
 namespace sabre::esp32
 {
-    class MQTTTopic : public sabre::MQTTTopic
-    {
-    public:
-        MQTTTopic(sabre::MQTTClient &client, const std::string &topic);
-
-        void publish(const std::string &message,
-                     sabre::MQTTQoS qos = sabre::MQTTQoS::UNDEFINED,
-                     sabre::MQTTRetain retain = sabre::MQTTRetain::UNDEFINED);
-    };
-
     class MQTTClient : public sabre::MQTTClient
     {
     private:
@@ -40,8 +30,6 @@ namespace sabre::esp32
         void subscribe(const std::string &topic,
                        std::function<void(const MQTTEvent &)> fn,
                        sabre::MQTTQoS qos = sabre::MQTTQoS::UNDEFINED) override;
-        std::unique_ptr<sabre::MQTTTopic>
-        get_topic(const std::string &topic_name) override;
 
         void handle_event(esp_event_base_t event_base, int32_t event_id,
                           void *event_data);

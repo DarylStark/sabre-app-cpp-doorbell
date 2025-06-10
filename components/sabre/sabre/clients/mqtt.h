@@ -46,7 +46,7 @@ namespace sabre
         virtual void
         publish(const std::string &message,
                 sabre::MQTTQoS qos = sabre::MQTTQoS::UNDEFINED,
-                sabre::MQTTRetain retain = sabre::MQTTRetain::UNDEFINED) = 0;
+                sabre::MQTTRetain retain = sabre::MQTTRetain::UNDEFINED);
         virtual void subscribe(std::function<void(const MQTTEvent &)> fn,
                                sabre::MQTTQoS qos = sabre::MQTTQoS::UNDEFINED);
 
@@ -75,8 +75,7 @@ namespace sabre
         virtual void subscribe(const std::string &topic,
                                std::function<void(const MQTTEvent &)> fn,
                                sabre::MQTTQoS qos = sabre::MQTTQoS::UNDEFINED);
-        virtual std::unique_ptr<MQTTTopic>
-        get_topic(const std::string &topic_name) = 0;
+        std::unique_ptr<MQTTTopic> get_topic(const std::string &topic_name);
     };
 }; // namespace sabre
 
