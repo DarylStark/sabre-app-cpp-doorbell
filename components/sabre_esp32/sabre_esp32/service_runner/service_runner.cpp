@@ -20,9 +20,10 @@ namespace sabre::esp32
     {
         if (_freertos_handle)
         {
+            TaskHandle_t handle = _freertos_handle;
             _freertos_handle = nullptr;
             _is_running = false;
-            vTaskDelete(_freertos_handle);
+            vTaskDelete(handle);
         }
     }
 
