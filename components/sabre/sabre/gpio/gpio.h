@@ -1,6 +1,8 @@
 #ifndef SABRE_GPIO_H
 #define SABRE_GPIO_H
 
+#include <memory>
+
 namespace sabre
 {
     class GPIO
@@ -11,6 +13,8 @@ namespace sabre
     public:
         virtual void reset() = 0;
     };
+    using GPIOOPtr = GPIO *;
+    using GPIOOSharedPtr = std::shared_ptr<GPIO>;
 }; // namespace sabre
 
 #endif // SABRE_GPIO_H

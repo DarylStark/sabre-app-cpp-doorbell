@@ -2,55 +2,52 @@
 
 namespace sabre
 {
-    MQTTTopic::MQTTTopic(sabre::MQTTClient &client, const std::string &topic)
+    MQTTTopic::MQTTTopic(MQTTClient &client, const std::string &topic)
         : _client(client), _topic(topic)
     {
     }
 
-    void MQTTTopic::publish(const std::string &message, sabre::MQTTQoS qos,
-                            sabre::MQTTRetain retain)
+    void MQTTTopic::publish(const std::string &message, MQTTQoS qos,
+                            MQTTRetain retain)
     {
-        if (qos == sabre::MQTTQoS::UNDEFINED)
+        if (qos == MQTTQoS::UNDEFINED)
             qos = _default_qos;
-        if (retain == sabre::MQTTRetain::UNDEFINED)
+        if (retain == MQTTRetain::UNDEFINED)
             retain = _default_retain;
 
         _client.publish(_topic, message, qos, retain);
     }
 
-    void MQTTTopic::subscribe(std::function<void(const sabre::MQTTEvent &)> fn,
-                              sabre::MQTTQoS qos)
+    void MQTTTopic::subscribe(MQTTCallback fn, MQTTQoS qos)
     {
         _client.subscribe(_topic, fn, qos);
     }
 
-    void MQTTTopic::set_default_qos(sabre::MQTTQoS qos)
+    void MQTTTopic::set_default_qos(MQTTQoS qos)
     {
-        if (qos == sabre::MQTTQoS::UNDEFINED)
+        if (qos == MQTTQoS::UNDEFINED)
             return;
         _default_qos = qos;
     }
 
-    void MQTTTopic::set_default_retain(sabre::MQTTRetain retain)
+    void MQTTTopic::set_default_retain(MQTTRetain retain)
     {
-        if (retain == sabre::MQTTRetain::UNDEFINED)
+        if (retain == MQTTRetain::UNDEFINED)
             return;
         _default_retain = retain;
     }
 
-    void MQTTClient::subscribe(const std::string &topic,
-                               std::function<void(const MQTTEvent &)> fn,
-                               sabre::MQTTQoS qos)
+    void MQTTClient::subscribe(const std::string &topic, MQTTCallback fn,
+                               MQTTQoS qos)
     {
-        if (qos == sabre::MQTTQoS::UNDEFINED)
-            qos = sabre::MQTTQoS::EXACTLY_ONCE;
+        if (qos == MQTTQoS::UNDEFINED)
+            qos = MQTTQoS::EXACTLY_ONCE;
 
         _subscriptions[topic] = fn;
     }
 
-    std::unique_ptr<sabre::MQTTTopic>
-    MQTTClient::get_topic(const std::string &topic_name)
+    MQTTTopicUniquePtr MQTTClient::get_topic(const std::string &topic_name)
     {
-        return std::make_unique<sabre::MQTTTopic>(*this, topic_name);
+        return std::make_unique<MQTTTopic>(*this, topic_name);
     }
 } // namespace sabre

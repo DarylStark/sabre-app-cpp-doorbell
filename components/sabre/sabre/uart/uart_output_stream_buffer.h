@@ -12,7 +12,7 @@ namespace sabre
         using int_type = std::streambuf::traits_type::int_type;
 
     private:
-        std::shared_ptr<sabre::UART> _uart;
+        UARTSharedPtr _uart;
         char *_buffer;
         size_t _buffer_size;
 
@@ -23,10 +23,11 @@ namespace sabre
         int sync() override;
 
     public:
-        UARTStreamBuf(std::shared_ptr<sabre::UART> uart,
-                      size_t buffer_size = 512);
+        UARTStreamBuf(UARTSharedPtr uart, size_t buffer_size = 512);
         ~UARTStreamBuf();
     };
+    using UARTStreamBufPtr = UARTStreamBuf *;
+    using UARTStreamBufSharedPtr = std::shared_ptr<UARTStreamBuf>;
 } // namespace sabre
 
 #endif // SABRE_UART_OUTPUT_STREAM_BUFFER_H

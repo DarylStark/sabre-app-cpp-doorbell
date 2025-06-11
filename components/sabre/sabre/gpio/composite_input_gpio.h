@@ -7,15 +7,15 @@
 
 namespace sabre
 {
-    class CompositeInputGPIO : public sabre::InputGPIO
+    class CompositeInputGPIO : public InputGPIO
     {
     private:
-        std::list<std::shared_ptr<sabre::InputGPIO>> _input_gpios;
+        std::list<InputGPIOSharedPtr> _input_gpios;
 
     public:
         CompositeInputGPIO();
 
-        void add_gpio(std::shared_ptr<sabre::InputGPIO> input_gpio);
+        void add_gpio(InputGPIOSharedPtr input_gpio);
 
         void reset() override;
 
@@ -24,9 +24,10 @@ namespace sabre
         void enable_pulldown() override;
         void disable_pullup() override;
         void disable_pulldown() override;
-        void add_interrupt_handler(std::function<void(int)>,
-                                   sabre::ISRTrigger) override;
+        void add_interrupt_handler(ISRHandler, ISRTrigger) override;
     };
+    using CompositeInputGPIOPtr = CompositeInputGPIO *;
+    using CompositeInputGPIOSharedPtr = std::shared_ptr<CompositeInputGPIO>;
 } // namespace sabre
 
 #endif // SABRE_COMPOSITE_INPUT_GPIO_H

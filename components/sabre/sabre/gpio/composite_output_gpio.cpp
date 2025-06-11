@@ -4,8 +4,7 @@ namespace sabre
 {
     CompositeOutputGPIO::CompositeOutputGPIO() {}
 
-    void CompositeOutputGPIO::add_gpio(
-        std::shared_ptr<sabre::OutputGPIO> output_gpio)
+    void CompositeOutputGPIO::add_gpio(OutputGPIOSharedPtr output_gpio)
     {
         _output_gpios.push_back(output_gpio);
     }

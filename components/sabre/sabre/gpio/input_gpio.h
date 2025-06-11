@@ -3,14 +3,19 @@
 
 #include "./gpio.h"
 #include <functional>
+#include <memory>
 
 namespace sabre
 {
+    using ISRHandler = std::function<void(int)>;
+
     struct ISRConfig
     {
-        std::function<void(int)> handler;
+        ISRHandler handler;
         int gpio;
     };
+    using ISRConfigPtr = ISRConfig *;
+    using ISRConfigSharedPtr = std::shared_ptr<ISRConfig>;
 
     enum class ISRTrigger : int
     {
@@ -36,9 +41,10 @@ namespace sabre
         virtual void enable_pulldown() = 0;
         virtual void disable_pullup() = 0;
         virtual void disable_pulldown() = 0;
-        virtual void add_interrupt_handler(std::function<void(int)>,
-                                           ISRTrigger) = 0;
+        virtual void add_interrupt_handler(ISRHandler, ISRTrigger) = 0;
     };
+    using InputGPIOPtr = InputGPIO *;
+    using InputGPIOSharedPtr = std::shared_ptr<InputGPIO>;
 }; // namespace sabre
 
 #endif // SABRE_INPUT_GPIO_H

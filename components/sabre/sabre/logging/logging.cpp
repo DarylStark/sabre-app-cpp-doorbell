@@ -4,47 +4,47 @@ namespace sabre
 {
     LoggingLevel Logging::_level = LoggingLevel::NOTSET;
 
-    void Logger::log(const LoggingLevel level, const std::string &message)
+    void Logger::log(const LoggingLevel level, const string &message)
     {
         Logging::log(level, _name, message);
     }
 
-    void Logger::debug(const std::string &message)
+    void Logger::debug(const string &message)
     {
         log(LoggingLevel::DEBUG, message);
     }
 
-    void Logger::info(const std::string &message)
+    void Logger::info(const string &message)
     {
         log(LoggingLevel::INFO, message);
     }
 
-    void Logger::notice(const std::string &message)
+    void Logger::notice(const string &message)
     {
         log(LoggingLevel::NOTICE, message);
     }
 
-    void Logger::warning(const std::string &message)
+    void Logger::warning(const string &message)
     {
         log(LoggingLevel::WARNING, message);
     }
 
-    void Logger::error(const std::string &message)
+    void Logger::error(const string &message)
     {
         log(LoggingLevel::ERROR, message);
     }
 
-    void Logger::critical(const std::string &message)
+    void Logger::critical(const string &message)
     {
         log(LoggingLevel::CRITICAL, message);
     }
 
-    void Logger::alert(const std::string &message)
+    void Logger::alert(const string &message)
     {
         log(LoggingLevel::ALERT, message);
     }
 
-    void Logger::emergency(const std::string &message)
+    void Logger::emergency(const string &message)
     {
         log(LoggingLevel::EMERGENCY, message);
     }
@@ -59,18 +59,18 @@ namespace sabre
         return _level;
     }
 
-    Logger::Logger(const std::string &name) : _name(name) {}
-    std::forward_list<std::shared_ptr<LogHandler>> Logging::_handlers;
+    Logger::Logger(const string &name) : _name(name) {}
+    std::forward_list<LogHandlerSharedPtr> Logging::_handlers;
 
-    void Logging::log(const LoggingLevel level, const std::string &logger_name,
-                      const std::string &message)
+    void Logging::log(const LoggingLevel level, const string &logger_name,
+                      const string &message)
     {
         if (level <= _level)
             for (const auto &handler : _handlers)
                 handler->handle_log(level, logger_name, message);
     }
 
-    void Logging::add_handler(std::shared_ptr<LogHandler> handler)
+    void Logging::add_handler(LogHandlerSharedPtr handler)
     {
         _handlers.push_front(handler);
     }
