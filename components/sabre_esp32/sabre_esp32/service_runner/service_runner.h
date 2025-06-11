@@ -12,7 +12,7 @@ namespace sabre::esp32
     {
     private:
         TaskHandle_t _freertos_handle = nullptr;
-        bool _is_running;
+        bool _is_running = false;
 
         static void _runner(void *b);
 
