@@ -1,101 +1,60 @@
 #include <freertos/FreeRTOS.h>
-#include <functional>
-#include <iostream>
 #include <memory>
-#include <sabre_esp32/gpio/output_gpio.h>
-#include <sabre_esp32/service_runner/service_runner.h>
 
-#include <sabre_esp32/clients/mqtt.h>
+#include <sabre_esp32/esp32_factory.h>
+
+#include <sabre/clients/mqtt.h>
 #include <sabre_esp32/utility/timed_waiter.h>
-#include <sabre_esp32/wifi/wifi_station.h>
-
-class MyService : public sabre::esp32::ServiceRunner
-{
-private:
-    bool _state = false;
-    sabre::esp32::OutputGPIO _gpio;
-    uint16_t _interval;
-
-protected:
-    void _service() override
-    {
-        while (true)
-        {
-            _state = !_state;
-            _gpio.set_level(_state);
-            vTaskDelay(pdMS_TO_TICKS(_interval));
-        }
-    }
-
-public:
-    MyService(uint16_t interval) : _gpio(2), _interval(interval) {}
-    void set_interval(uint16_t interval)
-    {
-        _interval = interval;
-    }
-};
 
 class Application
 {
-    std::shared_ptr<MyService> _service;
+private:
+    std::shared_ptr<sabre::Factory> _factory;
+    std::shared_ptr<sabre::WifiStation> _station;
+    std::shared_ptr<sabre::MQTTClient> _mqtt_client;
+    std::shared_ptr<sabre::OutputGPIO> _led;
+
+    void _mqtt_command(sabre::MQTTEvent e)
+    {
+        if (e.data == "on")
+            _led->set_high();
+        else if (e.data == "off")
+            _led->set_low();
+    }
+
+    void _connect_wifi()
+    {
+        if (_station == nullptr)
+            _station = _factory->create_wifi_station();
+        _station->connect("<SSID>", "<PASSWORD>");
+        sabre::esp32::TimedWaiter w(
+            [this]() -> bool { return _station->is_connected(); }, 5000, 100);
+        w();
+    }
+
+    void _connect_mqtt()
+    {
+        if (_mqtt_client == nullptr)
+            _mqtt_client = _factory->create_mqtt_client();
+        _mqtt_client->connect("<BROKER_IP>", "<CLIENT_ID>", "<USERNAME>",
+                              "<PASSWORD>");
+        sabre::esp32::TimedWaiter w([this]() -> bool
+                                    { return _mqtt_client->is_connected(); },
+                                    5000, 100);
+        w();
+        auto topic = _mqtt_client->get_topic("CB-KR23-DBL03-001/command");
+        topic->subscribe(std::bind(&Application::_mqtt_command, this,
+                                   std::placeholders::_1));
+    }
 
 public:
-    Application()
+    Application(std::shared_ptr<sabre::Factory> factory) : _factory(factory)
     {
-        using namespace sabre::esp32;
-
-        WifiStation wifi;
-        MQTTClient mqtt;
-
-        wifi.connect("<ssid>", "<password>");
-        TimedWaiter w([&wifi]() { return wifi.is_connected(); }, 5000, 100);
-        if (!w())
-            return;
-
-        std::cout << "Wifi connected!" << std::endl;
-        vTaskDelay(pdMS_TO_TICKS(5000));
-
-        mqtt.connect("<mqtt_broker_ip>", "<client_id>", "<username>",
-                     "<password>");
-
-        if (!TimedWaiter([&mqtt]() { return mqtt.is_connected(); }, 5000,
-                         100)())
-            return;
-
-        std::cout << "MQTT connected" << std::endl;
-
-        vTaskDelay(pdMS_TO_TICKS(500));
-
-        auto topic = mqtt.get_topic("my_topic/test/test");
-        auto cmd_topic = mqtt.get_topic("my_topic/test/cmd");
-        topic->set_default_qos(sabre::MQTTQoS::EXACTLY_ONCE);
-        topic->set_default_retain(sabre::MQTTRetain::RETAIN);
-        topic->publish("Hi there from my special object as ptr",
-                       sabre::MQTTQoS::FIRE_AND_FORGET);
-        mqtt.subscribe(
-            "my_topic/test/receive",
-            [](const sabre::MQTTEvent &e)
-            {
-                std::cout << "Received message on topic: " << e.topic
-                          << std::endl;
-                std::cout << "Message: " << e.data << std::endl;
-            },
-            sabre::MQTTQoS::EXACTLY_ONCE);
-        mqtt.subscribe(
-            "my_topic/test/receive2",
-            [](const sabre::MQTTEvent &e)
-            {
-                std::cout << "Other: " << e.topic << std::endl;
-                std::cout << "OMessage: " << e.data << std::endl;
-            },
-            sabre::MQTTQoS::EXACTLY_ONCE);
-        cmd_topic->subscribe(
-            [](const sabre::MQTTEvent &e)
-            { std::cout << "Command received: " << e.data << std::endl; },
-            sabre::MQTTQoS::EXACTLY_ONCE);
-
-        while (true)
-            vTaskDelay(pdMS_TO_TICKS(1000));
+        _led = _factory->create_output_gpio(2);
+        _led->set_high();
+        _connect_wifi();
+        vTaskDelay(pdMS_TO_TICKS(6000));
+        _connect_mqtt();
     }
 };
 
@@ -103,7 +62,10 @@ extern "C"
 {
     void app_main(void)
     {
-        Application app;
+        Application app(std::make_shared<sabre::esp32::ESP32Factory>());
+
+        while (true)
+            vTaskDelay(pdMS_TO_TICKS(1000));
 
         return;
     }

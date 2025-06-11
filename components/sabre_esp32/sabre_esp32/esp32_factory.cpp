@@ -33,4 +33,9 @@ namespace sabre::esp32
     {
         return std::make_shared<WifiSoftAP>();
     }
+
+    std::shared_ptr<sabre::MQTTClient> ESP32Factory::create_mqtt_client() const
+    {
+        return std::make_shared<MQTTClient>();
+    }
 } // namespace sabre::esp32

@@ -3,6 +3,7 @@
 
 #include "./uart/uart.h"
 #include "./uart/uart_output_stream_buffer.h"
+#include "clients/mqtt.h"
 #include "gpio/input_gpio.h"
 #include "gpio/output_gpio.h"
 #include "wifi/wifi_soft_ap.h"
@@ -33,6 +34,8 @@ namespace sabre
 
         virtual std::shared_ptr<WifiStation> create_wifi_station() const = 0;
         virtual std::shared_ptr<WifiSoftAP> create_wifi_soft_ap() const = 0;
+
+        virtual std::shared_ptr<MQTTClient> create_mqtt_client() const = 0;
     };
 
 } // namespace sabre
