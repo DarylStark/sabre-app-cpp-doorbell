@@ -8,6 +8,8 @@ idf_component_register(
         sabre_esp32/wifi/wifi.cpp
         sabre_esp32/esp32_factory.cpp
         sabre_esp32/utility/timed_waiter.cpp
+        sabre_esp32/service_runner/service_runner.cpp
+        sabre_esp32/clients/mqtt.cpp
     INCLUDE_DIRS
         "." 
     PRIV_REQUIRES
@@ -18,4 +20,5 @@ idf_component_register(
         esp_wifi
         nvs_flash
         esp_timer
+        mqtt
 )
