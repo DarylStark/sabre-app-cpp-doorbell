@@ -26,4 +26,4 @@ namespace sabre::esp32
     };
 } // namespace sabre::esp32
 
-#endif // SABRE_SERVICE_RUNNER_H
+#endif // SABRE_ESP32_SERVICE_RUNNER_H
