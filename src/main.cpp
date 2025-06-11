@@ -1,5 +1,4 @@
 #include <freertos/FreeRTOS.h>
-#include <memory>
 
 #include <sabre_esp32/esp32_factory.h>
 
@@ -9,10 +8,10 @@
 class Application
 {
 private:
-    std::shared_ptr<sabre::Factory> _factory;
-    std::shared_ptr<sabre::WifiStation> _station;
-    std::shared_ptr<sabre::MQTTClient> _mqtt_client;
-    std::shared_ptr<sabre::OutputGPIO> _led;
+    sabre::FactorySharedPtr _factory;
+    sabre::WifiStationShaOutputGPIOSharedPtr _station;
+    sabre::MQTTClientShaOutputGPIOSharedPtr _mqtt_client;
+    sabre::OutputGPIOSharedPtr _led;
 
     void _mqtt_command(sabre::MQTTEvent e)
     {
@@ -48,7 +47,7 @@ private:
     }
 
 public:
-    Application(std::shared_ptr<sabre::Factory> factory) : _factory(factory)
+    Application(sabre::FactorySharedPtr factory) : _factory(factory)
     {
         _led = _factory->create_output_gpio(2);
         _led->set_high();
