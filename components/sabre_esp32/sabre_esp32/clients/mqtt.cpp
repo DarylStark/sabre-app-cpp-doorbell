@@ -64,7 +64,7 @@ namespace sabre::esp32
     }
 
     void MQTTClient::subscribe(const std::string &topic,
-                               std::function<void(const MQTTEvent &)> fn,
+                               sabre::MQTTCallback fn,
                                sabre::MQTTQoS qos)
     {
         if (qos == sabre::MQTTQoS::UNDEFINED)

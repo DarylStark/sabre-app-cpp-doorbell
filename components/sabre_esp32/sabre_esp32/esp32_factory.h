@@ -19,18 +19,18 @@ namespace sabre::esp32
         std::map<uint16_t, std::unique_ptr<std::ostream>> _output_streams;
 
     public:
-        std::shared_ptr<sabre::UART>
-        create_uart_object(uint32_t uart_number, int32_t baud_rate,
-                           int32_t tx_pin, int32_t rx_pin) const override;
-
-        std::shared_ptr<sabre::InputGPIO> create_input_gpio(int32_t pin) const;
-        std::shared_ptr<sabre::OutputGPIO>
-        create_output_gpio(int32_t pin) const;
-        std::shared_ptr<sabre::WifiStation> create_wifi_station() const;
-        std::shared_ptr<sabre::WifiSoftAP> create_wifi_soft_ap() const;
-
-        std::shared_ptr<sabre::MQTTClient> create_mqtt_client() const;
+        sabre::UARTSharedPtr create_uart_object(uint32_t uart_number,
+                                                int32_t baud_rate,
+                                                int32_t tx_pin,
+                                                int32_t rx_pin) const override;
+        sabre::InputGPIOSharedPtr create_input_gpio(int32_t pin) const;
+        sabre::OutputGPIOSharedPtr create_output_gpio(int32_t pin) const;
+        sabre::WifiStationSharedPtr create_wifi_station() const;
+        sabre::WifiSoftAPSharedPtr create_wifi_soft_ap() const;
+        sabre::MQTTClientSharedPtr create_mqtt_client() const;
     };
+    using ESP32FactoryPtr = ESP32Factory *;
+    using ESP32FactorySharedPtr = std::shared_ptr<ESP32Factory>;
 } // namespace sabre::esp32
 
 #endif /* SABRE_ESP32_FACTORY_H */

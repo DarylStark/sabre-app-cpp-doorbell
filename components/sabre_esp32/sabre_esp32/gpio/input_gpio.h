@@ -14,7 +14,7 @@ namespace sabre::esp32
     private:
         int32_t _pin_number;
         gpio_num_t _gpio_num;
-        std::shared_ptr<sabre::ISRConfig> _config;
+        ISRConfigSharedPtr _config;
 
         static std::unordered_map<sabre::ISRTrigger, gpio_int_type_t>
             _trigger_map;
@@ -29,9 +29,11 @@ namespace sabre::esp32
         void enable_pulldown() override;
         void disable_pullup() override;
         void disable_pulldown() override;
-        void add_interrupt_handler(std::function<void(int)> handler,
+        void add_interrupt_handler(sabre::ISRHandler,
                                    sabre::ISRTrigger trigger);
     };
+    using InputGPIOPtr = InputGPIO *;
+    using InputGPIOSharedPtr = std::shared_ptr<InputGPIO>;
 } // namespace sabre::esp32
 
 #endif // SABRE_ESP32_INPUT_GPIO_H

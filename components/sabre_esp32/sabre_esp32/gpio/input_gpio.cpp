@@ -53,7 +53,7 @@ namespace sabre::esp32
                          "Failed to disable pull-down");
     }
 
-    void InputGPIO::add_interrupt_handler(std::function<void(int)> handler,
+    void InputGPIO::add_interrupt_handler(sabre::ISRHandler handler,
                                           sabre::ISRTrigger trigger)
     {
         _config = std::make_shared<sabre::ISRConfig>();

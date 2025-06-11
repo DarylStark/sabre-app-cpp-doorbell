@@ -9,8 +9,8 @@ class Application
 {
 private:
     sabre::FactorySharedPtr _factory;
-    sabre::WifiStationShaOutputGPIOSharedPtr _station;
-    sabre::MQTTClientShaOutputGPIOSharedPtr _mqtt_client;
+    sabre::WifiStationSharedPtr _station;
+    sabre::MQTTClientSharedPtr _mqtt_client;
     sabre::OutputGPIOSharedPtr _led;
 
     void _mqtt_command(sabre::MQTTEvent e)

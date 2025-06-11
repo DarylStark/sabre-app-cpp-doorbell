@@ -27,13 +27,14 @@ namespace sabre::esp32
 
         void publish(const std::string &topic, const std::string &message,
                      sabre::MQTTQoS qos, sabre::MQTTRetain retain) override;
-        void subscribe(const std::string &topic,
-                       std::function<void(const MQTTEvent &)> fn,
+        void subscribe(const std::string &topic, sabre::MQTTCallback fn,
                        sabre::MQTTQoS qos = sabre::MQTTQoS::UNDEFINED) override;
 
         void handle_event(esp_event_base_t event_base, int32_t event_id,
                           void *event_data);
     };
+    using MQTTClientPtr = MQTTClient *;
+    using MQTTClientSharedPtr = shared_ptr<MQTTClient>;
 } // namespace sabre::esp32
 
 #endif // SABRE_ESP32_CLIENTS_MQTT_H

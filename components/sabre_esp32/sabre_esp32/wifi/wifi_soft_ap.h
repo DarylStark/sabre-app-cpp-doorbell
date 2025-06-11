@@ -32,6 +32,8 @@ namespace sabre::esp32
         void wifi_event_handler(esp_event_base_t event_base, int32_t event_id,
                                 void *event_data);
     };
+    using WifiSoftAPPtr = WifiSoftAP *;
+    using WifiSoftAPSharedPtr = std::shared_ptr<WifiSoftAP>;
 } // namespace sabre::esp32
 
 #endif // SABRE_ESP32_WIFI_SOFT_AP_H
