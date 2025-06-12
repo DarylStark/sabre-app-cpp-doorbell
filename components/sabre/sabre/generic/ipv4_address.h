@@ -2,7 +2,7 @@
 #define SABRE_IPV4_ADDRESS_H
 
 #include <cstdint>
-#include <ostream>
+#include <memory>
 #include <string>
 
 namespace sabre
@@ -19,6 +19,8 @@ namespace sabre
         operator uint32_t() const;
         operator std::string() const;
     };
+    using IPv4AddressPtr = IPv4Address *;
+    using IPv4AddressSharedPtr = std::shared_ptr<IPv4Address>;
 }; // namespace sabre
 
 #endif // SABRE_IPV4_ADDRESS_H

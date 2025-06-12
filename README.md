@@ -4,6 +4,8 @@ This is a doorbell application for a ESP32 microcontroller.
 
 ## Set up
 
+Before doing anything, create a copy of `src/credentials.h.example` and name it `credentials.h`. Fill in the necessary Wi-Fi credentials and MQTT credentials in the new file.
+
 To set up the project, make sure you have ESP IDF installed. You can use the dev container defined in this repository to set up the environment. The dev container includes all the necessary tools and libraries to build and flash the project to the ESP32.
 
 First, set the build target to the correct module (ESP32, ESP32-S3, etc):

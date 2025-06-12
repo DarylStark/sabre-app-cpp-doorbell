@@ -3,9 +3,11 @@
 
 #include <cstdint>
 #include <functional>
+#include <memory>
 
 namespace sabre
 {
+    using TimedWaiterPred = std::function<bool()>;
     class TimedWaiter
     {
     private:
@@ -13,7 +15,7 @@ namespace sabre
 
     protected:
         uint64_t _timeout_in_ms;
-        std::function<bool()> _fn;
+        TimedWaiterPred _fn;
         uint64_t _sleep_time = 0;
 
         bool _result = false;
@@ -23,12 +25,14 @@ namespace sabre
         virtual void _sleep() const = 0;
 
     public:
-        TimedWaiter(std::function<bool()> fn, uint64_t timeout_in_ms,
+        TimedWaiter(TimedWaiterPred fn, uint64_t timeout_in_ms,
                     uint64_t sleep_time);
         bool operator()();
         bool get_result() const;
         uint64_t get_result_runtime() const;
     };
+    using TimedWaiterPtr = TimedWaiter *;
+    using TimedWaiterSharedPtr = std::shared_ptr<TimedWaiter>;
 }; // namespace sabre
 
 #endif // SABRE_TIMED_WAITER_H

@@ -1,11 +1,10 @@
 #include <streambuf>
 
-#include "./uart_output_stream_buffer.h"
+#include "uart_output_stream_buffer.h"
 
 namespace sabre
 {
-    UARTStreamBuf::UARTStreamBuf(std::shared_ptr<sabre::UART> uart,
-                                 size_t buffer_size)
+    UARTStreamBuf::UARTStreamBuf(UARTSharedPtr uart, size_t buffer_size)
         : _uart(uart)
     {
         _buffer = new char[buffer_size];

@@ -11,6 +11,8 @@ namespace sabre
         virtual void stop() = 0;
         virtual void deinitialize() = 0;
     };
+    using WifiSoftAPPtr = WifiSoftAP *;
+    using WifiSoftAPSharedPtr = std::shared_ptr<WifiSoftAP>;
 }; // namespace sabre
 
 #endif // SABRE_WIFI_SOFT_AP_H

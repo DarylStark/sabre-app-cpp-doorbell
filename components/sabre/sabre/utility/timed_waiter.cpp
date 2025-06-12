@@ -10,7 +10,7 @@ namespace sabre
         return result;
     }
 
-    TimedWaiter::TimedWaiter(std::function<bool()> fn, uint64_t timeout_in_ms,
+    TimedWaiter::TimedWaiter(TimedWaiterPred fn, uint64_t timeout_in_ms,
                              uint64_t sleep_time)
         : _timeout_in_ms(timeout_in_ms), _fn(fn), _sleep_time(sleep_time)
     {

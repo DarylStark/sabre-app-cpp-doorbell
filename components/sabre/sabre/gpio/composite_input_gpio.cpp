@@ -1,11 +1,10 @@
-#include "./composite_input_gpio.h"
+#include "composite_input_gpio.h"
 
 namespace sabre
 {
     CompositeInputGPIO::CompositeInputGPIO() {}
 
-    void
-    CompositeInputGPIO::add_gpio(std::shared_ptr<sabre::InputGPIO> input_gpio)
+    void CompositeInputGPIO::add_gpio(InputGPIOSharedPtr input_gpio)
     {
         _input_gpios.push_back(input_gpio);
     }
@@ -48,9 +47,8 @@ namespace sabre
             input_gpio->disable_pulldown();
     }
 
-    void
-    CompositeInputGPIO::add_interrupt_handler(std::function<void(int)> handler,
-                                              sabre::ISRTrigger trigger)
+    void CompositeInputGPIO::add_interrupt_handler(ISRHandler handler,
+                                                   ISRTrigger trigger)
     {
         for (auto &input_gpio : _input_gpios)
             input_gpio->add_interrupt_handler(handler, trigger);

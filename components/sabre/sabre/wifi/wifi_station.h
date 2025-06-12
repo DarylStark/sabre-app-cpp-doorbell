@@ -17,6 +17,8 @@ namespace sabre
 
         virtual bool is_connected() const = 0;
     };
+    using WifiStationPtr = WifiStation *;
+    using WifiStationSharedPtr = std::shared_ptr<WifiStation>;
 } // namespace sabre
 
 #endif // SABRE_WIFI_STATION_H

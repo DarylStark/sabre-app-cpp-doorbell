@@ -2,6 +2,7 @@
 #define SABRE_LOG_HANDLERS_H
 
 #include "logging.h"
+#include <memory>
 #include <ostream>
 #include <vector>
 
@@ -18,6 +19,8 @@ namespace sabre
                         const std::string &logger_name,
                         const std::string &message) override;
     };
+    using OStreamLogHandlerPtr = OStreamLogHandler *;
+    using OStreamLogHandlerSharedPtr = std::shared_ptr<OStreamLogHandler>;
 
     class LogBufferHandler : public LogHandler
     {
@@ -32,6 +35,8 @@ namespace sabre
                         const std::string &message) override;
         const std::vector<std::string> &get_buffer() const;
     };
+    using LogBufferHandlerPtr = LogBufferHandler *;
+    using LogBufferHandlerSharedPtr = std::shared_ptr<LogBufferHandler>;
 } // namespace sabre
 
 #endif // SABRE_LOG_HANDLERS_H

@@ -60,7 +60,7 @@ namespace sabre
     }
 
     Logger::Logger(const std::string &name) : _name(name) {}
-    std::forward_list<std::shared_ptr<LogHandler>> Logging::_handlers;
+    std::forward_list<LogHandlerSharedPtr> Logging::_handlers;
 
     void Logging::log(const LoggingLevel level, const std::string &logger_name,
                       const std::string &message)
@@ -70,7 +70,7 @@ namespace sabre
                 handler->handle_log(level, logger_name, message);
     }
 
-    void Logging::add_handler(std::shared_ptr<LogHandler> handler)
+    void Logging::add_handler(LogHandlerSharedPtr handler)
     {
         _handlers.push_front(handler);
     }

@@ -30,35 +30,40 @@ namespace sabre
         MQTTRetain retain;
         MQTTQoS qos;
     };
+    using MQTTEventPtr = MQTTEvent *;
+    using MQTTEventSharedPtr = std::shared_ptr<MQTTEvent>;
 
     class MQTTClient;
+
+    using MQTTCallback = std::function<void(const MQTTEvent &)>;
 
     class MQTTTopic
     {
     protected:
-        sabre::MQTTClient &_client;
+        MQTTClient &_client;
         std::string _topic;
-        sabre::MQTTQoS _default_qos = sabre::MQTTQoS::FIRE_AND_FORGET;
-        sabre::MQTTRetain _default_retain = sabre::MQTTRetain::DONT_RETAIN;
+        MQTTQoS _default_qos = MQTTQoS::FIRE_AND_FORGET;
+        MQTTRetain _default_retain = MQTTRetain::DONT_RETAIN;
 
     public:
-        MQTTTopic(sabre::MQTTClient &client, const std::string &topic);
-        virtual void
-        publish(const std::string &message,
-                sabre::MQTTQoS qos = sabre::MQTTQoS::UNDEFINED,
-                sabre::MQTTRetain retain = sabre::MQTTRetain::UNDEFINED);
-        virtual void subscribe(std::function<void(const MQTTEvent &)> fn,
-                               sabre::MQTTQoS qos = sabre::MQTTQoS::UNDEFINED);
+        MQTTTopic(MQTTClient &client, const std::string &topic);
+        virtual void publish(const std::string &message,
+                             MQTTQoS qos = MQTTQoS::UNDEFINED,
+                             MQTTRetain retain = MQTTRetain::UNDEFINED);
+        virtual void subscribe(MQTTCallback fn,
+                               MQTTQoS qos = MQTTQoS::UNDEFINED);
 
-        void set_default_qos(sabre::MQTTQoS qos);
-        void set_default_retain(sabre::MQTTRetain retain);
+        void set_default_qos(MQTTQoS qos);
+        void set_default_retain(MQTTRetain retain);
     };
+    using MQTTTopicPtr = MQTTTopic *;
+    using MQTTTopicSharedPtr = std::shared_ptr<MQTTTopic>;
+    using MQTTTopicUniquePtr = std::unique_ptr<MQTTTopic>;
 
     class MQTTClient
     {
     protected:
-        std::unordered_map<std::string, std::function<void(const MQTTEvent &)>>
-            _subscriptions;
+        std::unordered_map<std::string, MQTTCallback> _subscriptions;
 
     public:
         virtual void connect(const std::string &hostname,
@@ -72,11 +77,12 @@ namespace sabre
         virtual void publish(const std::string &topic,
                              const std::string &message, MQTTQoS qos,
                              MQTTRetain retain) = 0;
-        virtual void subscribe(const std::string &topic,
-                               std::function<void(const MQTTEvent &)> fn,
-                               sabre::MQTTQoS qos = sabre::MQTTQoS::UNDEFINED);
-        std::unique_ptr<MQTTTopic> get_topic(const std::string &topic_name);
+        virtual void subscribe(const std::string &topic, MQTTCallback fn,
+                               MQTTQoS qos = MQTTQoS::UNDEFINED);
+        MQTTTopicUniquePtr get_topic(const std::string &topic_name);
     };
+    using MQTTClientPtr = MQTTClient *;
+    using MQTTClientSharedPtr = std::shared_ptr<MQTTClient>;
 }; // namespace sabre
 
 #endif // SABRE_CLIENTS_MQTT_H

@@ -12,7 +12,7 @@ namespace sabre::esp32
         vTaskDelay(_sleep_time / portTICK_PERIOD_MS);
     }
 
-    TimedWaiter::TimedWaiter(std::function<bool()> fn, uint64_t timeout_in_ms,
+    TimedWaiter::TimedWaiter(sabre::TimedWaiterPred fn, uint64_t timeout_in_ms,
                              uint64_t sleep_time)
         : sabre::TimedWaiter(fn, timeout_in_ms, sleep_time)
     {

@@ -14,7 +14,7 @@ namespace sabre::esp32
         void _sleep() const;
 
     public:
-        TimedWaiter(std::function<bool()> fn, uint64_t timeout_in_ms,
+        TimedWaiter(sabre::TimedWaiterPred fn, uint64_t timeout_in_ms,
                     uint64_t sleep_time = 0);
     };
 } // namespace sabre::esp32
