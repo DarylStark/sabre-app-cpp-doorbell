@@ -13,7 +13,7 @@
 
 namespace sabre::esp32
 {
-    class ESP32Factory : public sabre::Factory
+    class Factory : public sabre::Factory
     {
     private:
         std::map<uint16_t, std::unique_ptr<std::ostream>> _output_streams;
@@ -29,8 +29,6 @@ namespace sabre::esp32
         sabre::WifiSoftAPSharedPtr create_wifi_soft_ap() const;
         sabre::MQTTClientSharedPtr create_mqtt_client() const;
     };
-    using ESP32FactoryPtr = ESP32Factory *;
-    using ESP32FactorySharedPtr = std::shared_ptr<ESP32Factory>;
 } // namespace sabre::esp32
 
 #endif /* SABRE_ESP32_FACTORY_H */

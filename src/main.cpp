@@ -1,6 +1,6 @@
 #include <freertos/FreeRTOS.h>
 
-#include <sabre_esp32/esp32_factory.h>
+#include <sabre_esp32/factory.h>
 
 #include <sabre/clients/mqtt.h>
 #include <sabre_esp32/utility/timed_waiter.h>
@@ -63,7 +63,7 @@ extern "C"
 {
     void app_main(void)
     {
-        Application app(std::make_shared<sabre::esp32::ESP32Factory>());
+        Application app(std::make_shared<sabre::esp32::Factory>());
 
         while (true)
             vTaskDelay(pdMS_TO_TICKS(1000));
