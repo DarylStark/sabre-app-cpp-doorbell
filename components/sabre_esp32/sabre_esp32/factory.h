@@ -1,12 +1,12 @@
 #ifndef SABRE_ESP32_FACTORY_H
 #define SABRE_ESP32_FACTORY_H
 
-#include "./gpio/input_gpio.h"
-#include "./gpio/output_gpio.h"
-#include "./uart/uart.h"
-#include "./wifi/wifi_soft_ap.h"
-#include "./wifi/wifi_station.h"
 #include "clients/mqtt.h"
+#include "gpio/input_gpio.h"
+#include "gpio/output_gpio.h"
+#include "uart/uart.h"
+#include "wifi/wifi_soft_ap.h"
+#include "wifi/wifi_station.h"
 #include <map>
 #include <memory>
 #include <sabre/factory.h>

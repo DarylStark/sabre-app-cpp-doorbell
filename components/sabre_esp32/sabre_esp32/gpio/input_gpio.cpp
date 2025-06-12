@@ -1,4 +1,4 @@
-#include "./input_gpio.h"
+#include "input_gpio.h"
 #include "../exceptions/exceptions.h"
 #include <driver/gpio.h>
 

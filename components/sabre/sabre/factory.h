@@ -1,11 +1,11 @@
 #ifndef SABRE_FACTORY_H
 #define SABRE_FACTORY_H
 
-#include "./uart/uart.h"
-#include "./uart/uart_output_stream_buffer.h"
 #include "clients/mqtt.h"
 #include "gpio/input_gpio.h"
 #include "gpio/output_gpio.h"
+#include "uart/uart.h"
+#include "uart/uart_output_stream_buffer.h"
 #include "wifi/wifi_soft_ap.h"
 #include "wifi/wifi_station.h"
 #include <memory>

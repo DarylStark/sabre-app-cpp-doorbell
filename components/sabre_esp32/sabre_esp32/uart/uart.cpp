@@ -1,4 +1,4 @@
-#include "./uart.h"
+#include "uart.h"
 #include "../exceptions/exceptions.h"
 
 namespace sabre::esp32

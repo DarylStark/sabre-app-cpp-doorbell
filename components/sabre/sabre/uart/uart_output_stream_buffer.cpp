@@ -1,6 +1,6 @@
 #include <streambuf>
 
-#include "./uart_output_stream_buffer.h"
+#include "uart_output_stream_buffer.h"
 
 namespace sabre
 {

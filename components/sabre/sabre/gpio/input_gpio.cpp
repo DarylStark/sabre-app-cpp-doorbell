@@ -1,4 +1,4 @@
-#include "./input_gpio.h"
+#include "input_gpio.h"
 
 namespace sabre
 {

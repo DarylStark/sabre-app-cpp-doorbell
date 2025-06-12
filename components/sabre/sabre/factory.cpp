@@ -1,4 +1,4 @@
-#include "./factory.h"
+#include "factory.h"
 
 namespace sabre
 {
