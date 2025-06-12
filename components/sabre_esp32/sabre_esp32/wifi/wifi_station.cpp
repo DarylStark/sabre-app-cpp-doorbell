@@ -1,4 +1,5 @@
 #include "wifi_station.h"
+#include <arpa/inet.h>
 #include <cstring>
 #include <esp_event.h>
 #include <esp_log.h>
@@ -58,9 +59,9 @@ namespace sabre::esp32
         {
             ip_event_got_ip_t *event = (ip_event_got_ip_t *)event_data;
 
-            sabre::IPv4Address ipv4(event->ip_info.ip.addr);
-            sabre::IPv4Address mask(event->ip_info.netmask.addr);
-            sabre::IPv4Address gateway(event->ip_info.gw.addr);
+            sabre::IPv4Address ipv4(ntohl(event->ip_info.ip.addr));
+            sabre::IPv4Address mask(ntohl(event->ip_info.netmask.addr));
+            sabre::IPv4Address gateway(ntohl(event->ip_info.gw.addr));
 
             _logger.debug("Got IPv4 address");
             std::stringstream log;

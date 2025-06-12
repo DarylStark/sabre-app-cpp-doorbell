@@ -1,15 +1,20 @@
 #include "ipv4_address.h"
+#include <iostream>
 #include <ostream>
 
 namespace sabre
 {
     IPv4Address::IPv4Address() : _address(0) {}
 
-    IPv4Address::IPv4Address(uint32_t address) : _address(address) {}
+    IPv4Address::IPv4Address(uint32_t address) : _address(address)
+    {
+        std::cout << "IP " << address << " --> "
+                  << static_cast<std::string>(*this) << std::endl;
+    }
 
     uint16_t IPv4Address::operator[](uint8_t octet) const
     {
-        return _address >> (octet * 8) & 0xff;
+        return _address >> ((3 - octet) * 8) & 0xff;
     }
 
     IPv4Address::operator uint32_t() const
