@@ -6,10 +6,6 @@
 #include <string>
 #include <unordered_map>
 
-using std::shared_ptr;
-using std::string;
-using std::unique_ptr;
-
 namespace sabre
 {
     enum class MQTTQoS
@@ -29,13 +25,13 @@ namespace sabre
 
     struct MQTTEvent
     {
-        string topic;
-        string data;
+        std::string topic;
+        std::string data;
         MQTTRetain retain;
         MQTTQoS qos;
     };
     using MQTTEventPtr = MQTTEvent *;
-    using MQTTEventSharedPtr = shared_ptr<MQTTEvent>;
+    using MQTTEventSharedPtr = std::shared_ptr<MQTTEvent>;
 
     class MQTTClient;
 
@@ -45,13 +41,13 @@ namespace sabre
     {
     protected:
         MQTTClient &_client;
-        string _topic;
+        std::string _topic;
         MQTTQoS _default_qos = MQTTQoS::FIRE_AND_FORGET;
         MQTTRetain _default_retain = MQTTRetain::DONT_RETAIN;
 
     public:
-        MQTTTopic(MQTTClient &client, const string &topic);
-        virtual void publish(const string &message,
+        MQTTTopic(MQTTClient &client, const std::string &topic);
+        virtual void publish(const std::string &message,
                              MQTTQoS qos = MQTTQoS::UNDEFINED,
                              MQTTRetain retain = MQTTRetain::UNDEFINED);
         virtual void subscribe(MQTTCallback fn,
@@ -61,30 +57,32 @@ namespace sabre
         void set_default_retain(MQTTRetain retain);
     };
     using MQTTTopicPtr = MQTTTopic *;
-    using MQTTTopicSharedPtr = shared_ptr<MQTTTopic>;
-    using MQTTTopicUniquePtr = unique_ptr<MQTTTopic>;
+    using MQTTTopicSharedPtr = std::shared_ptr<MQTTTopic>;
+    using MQTTTopicUniquePtr = std::unique_ptr<MQTTTopic>;
 
     class MQTTClient
     {
     protected:
-        std::unordered_map<string, MQTTCallback> _subscriptions;
+        std::unordered_map<std::string, MQTTCallback> _subscriptions;
 
     public:
-        virtual void connect(const string &hostname, const string &client_id,
-                             const string &username,
-                             const string &password) = 0;
+        virtual void connect(const std::string &hostname,
+                             const std::string &client_id,
+                             const std::string &username,
+                             const std::string &password) = 0;
         virtual void disconnect() = 0;
         virtual void stop() = 0;
         virtual bool is_connected() const = 0;
 
-        virtual void publish(const string &topic, const string &message,
-                             MQTTQoS qos, MQTTRetain retain) = 0;
-        virtual void subscribe(const string &topic, MQTTCallback fn,
+        virtual void publish(const std::string &topic,
+                             const std::string &message, MQTTQoS qos,
+                             MQTTRetain retain) = 0;
+        virtual void subscribe(const std::string &topic, MQTTCallback fn,
                                MQTTQoS qos = MQTTQoS::UNDEFINED);
-        MQTTTopicUniquePtr get_topic(const string &topic_name);
+        MQTTTopicUniquePtr get_topic(const std::string &topic_name);
     };
     using MQTTClientPtr = MQTTClient *;
-    using MQTTClientSharedPtr = shared_ptr<MQTTClient>;
+    using MQTTClientSharedPtr = std::shared_ptr<MQTTClient>;
 }; // namespace sabre
 
 #endif // SABRE_CLIENTS_MQTT_H

@@ -5,8 +5,6 @@
 #include <memory>
 #include <string>
 
-using std::string;
-
 namespace sabre
 {
     enum class LoggingLevel : int
@@ -25,19 +23,19 @@ namespace sabre
     class Logger
     {
     private:
-        string _name;
+        std::string _name;
 
     public:
-        Logger(const string &name);
-        void log(const LoggingLevel level, const string &message);
-        void debug(const string &message);
-        void info(const string &message);
-        void notice(const string &message);
-        void warning(const string &message);
-        void error(const string &message);
-        void critical(const string &message);
-        void alert(const string &message);
-        void emergency(const string &message);
+        Logger(const std::string &name);
+        void log(const LoggingLevel level, const std::string &message);
+        void debug(const std::string &message);
+        void info(const std::string &message);
+        void notice(const std::string &message);
+        void warning(const std::string &message);
+        void error(const std::string &message);
+        void critical(const std::string &message);
+        void alert(const std::string &message);
+        void emergency(const std::string &message);
     };
     using LoggerPtr = Logger *;
     using LoggerSharedPtr = std::shared_ptr<Logger>;
@@ -46,8 +44,8 @@ namespace sabre
     {
     public:
         virtual void handle_log(const LoggingLevel level,
-                                const string &logger_name,
-                                const string &message) = 0;
+                                const std::string &logger_name,
+                                const std::string &message) = 0;
     };
     using LogHandlerPtr = LogHandler *;
     using LogHandlerSharedPtr = std::shared_ptr<LogHandler>;
@@ -61,8 +59,9 @@ namespace sabre
     public:
         static void set_level(LoggingLevel level);
         static LoggingLevel get_level();
-        static void log(const LoggingLevel level, const string &logger_name,
-                        const string &message);
+        static void log(const LoggingLevel level,
+                        const std::string &logger_name,
+                        const std::string &message);
         static void add_handler(LogHandlerSharedPtr handler);
     };
     using LoggingPtr = Logging *;
