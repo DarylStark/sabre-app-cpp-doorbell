@@ -54,8 +54,6 @@ namespace sabre::esp32
         void handle_event(esp_event_base_t event_base, int32_t event_id,
                           void *event_data);
     };
-    using WifiPtr = Wifi *;
-    using WifiSharedPtr = std::shared_ptr<Wifi>;
 }; // namespace sabre::esp32
 
 #endif // SABRE_ESP32_WIFI_H

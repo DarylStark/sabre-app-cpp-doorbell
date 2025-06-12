@@ -32,8 +32,6 @@ namespace sabre::esp32
         void add_interrupt_handler(sabre::ISRHandler,
                                    sabre::ISRTrigger trigger);
     };
-    using InputGPIOPtr = InputGPIO *;
-    using InputGPIOSharedPtr = std::shared_ptr<InputGPIO>;
 } // namespace sabre::esp32
 
 #endif // SABRE_ESP32_INPUT_GPIO_H

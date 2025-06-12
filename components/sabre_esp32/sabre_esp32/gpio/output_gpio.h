@@ -23,8 +23,6 @@ namespace sabre::esp32
         void set_low() override;
         void set_level(bool level) override;
     };
-    using OutputGPIOPtr = OutputGPIO *;
-    using OutputGPIOSharedPtr = std::shared_ptr<OutputGPIO>;
 } // namespace sabre::esp32
 
 #endif // SABRE_ESP32_OUTPUT_GPIO_H

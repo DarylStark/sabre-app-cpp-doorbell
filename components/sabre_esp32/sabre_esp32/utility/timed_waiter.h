@@ -17,8 +17,6 @@ namespace sabre::esp32
         TimedWaiter(sabre::TimedWaiterPred fn, uint64_t timeout_in_ms,
                     uint64_t sleep_time = 0);
     };
-    using TimedWaiterPtr = TimedWaiter *;
-    using TimedWaiterSharedPtr = std::shared_ptr<TimedWaiter>;
 } // namespace sabre::esp32
 
 #endif // SABRE_ESP32_TIMED_WAITER_H

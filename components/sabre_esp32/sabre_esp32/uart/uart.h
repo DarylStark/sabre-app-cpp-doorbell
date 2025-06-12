@@ -30,8 +30,6 @@ namespace sabre::esp32
 
         int get_bytes(char *data, size_t length, uint32_t timeout = 1000) const;
     };
-    using UARTPtr = UART *;
-    using UARTSharedPtr = std::shared_ptr<UART>;
 } // namespace sabre::esp32
 
 #endif // SABRE_ESP32_UART_H

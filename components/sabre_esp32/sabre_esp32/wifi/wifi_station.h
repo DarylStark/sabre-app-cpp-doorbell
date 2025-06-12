@@ -40,8 +40,6 @@ namespace sabre::esp32
         void ip_event_handler(esp_event_base_t event_base, int32_t event_id,
                               void *event_data);
     };
-    using WifiStationPtr = WifiStation *;
-    using WifiStationSharedPtr = std::shared_ptr<WifiStation>;
 } // namespace sabre::esp32
 
 #endif // SABRE_ESP32_WIFI_STATION_H

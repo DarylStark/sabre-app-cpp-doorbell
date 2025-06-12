@@ -33,8 +33,6 @@ namespace sabre::esp32
         void handle_event(esp_event_base_t event_base, int32_t event_id,
                           void *event_data);
     };
-    using MQTTClientPtr = MQTTClient *;
-    using MQTTClientSharedPtr = shared_ptr<MQTTClient>;
 } // namespace sabre::esp32
 
 #endif // SABRE_ESP32_CLIENTS_MQTT_H
