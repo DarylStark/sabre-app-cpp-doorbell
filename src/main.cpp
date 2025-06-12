@@ -5,6 +5,8 @@
 #include <sabre/clients/mqtt.h>
 #include <sabre_esp32/utility/timed_waiter.h>
 
+#include "credentials.h"
+
 class Application
 {
 private:
@@ -25,7 +27,7 @@ private:
     {
         if (_station == nullptr)
             _station = _factory->create_wifi_station();
-        _station->connect("<SSID>", "<PASSWORD>");
+        _station->connect(WIFI_SSID, WIFI_PASS);
         sabre::esp32::TimedWaiter w(
             [this]() -> bool { return _station->is_connected(); }, 5000, 100);
         w();
@@ -35,8 +37,8 @@ private:
     {
         if (_mqtt_client == nullptr)
             _mqtt_client = _factory->create_mqtt_client();
-        _mqtt_client->connect("<BROKER_IP>", "<CLIENT_ID>", "<USERNAME>",
-                              "<PASSWORD>");
+        _mqtt_client->connect(MQTT_HOSTNAME, MQTT_CLIENT_ID, MQTT_USERNAME,
+                              MQTT_PASSWORD);
         sabre::esp32::TimedWaiter w([this]() -> bool
                                     { return _mqtt_client->is_connected(); },
                                     5000, 100);
