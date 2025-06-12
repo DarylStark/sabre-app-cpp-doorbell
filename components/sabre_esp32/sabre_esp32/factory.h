@@ -5,6 +5,7 @@
 #include "gpio/input_gpio.h"
 #include "gpio/output_gpio.h"
 #include "uart/uart.h"
+#include "utility/timed_waiter.h"
 #include "wifi/wifi_soft_ap.h"
 #include "wifi/wifi_station.h"
 #include <map>
@@ -28,6 +29,9 @@ namespace sabre::esp32
         sabre::WifiStationSharedPtr create_wifi_station() const;
         sabre::WifiSoftAPSharedPtr create_wifi_soft_ap() const;
         sabre::MQTTClientSharedPtr create_mqtt_client() const;
+        sabre::TimedWaiterSharedPtr
+        create_timed_waiter(TimedWaiterPred fn, uint64_t timeout_in_ms,
+                            uint64_t sleep_time) const;
     };
 } // namespace sabre::esp32
 

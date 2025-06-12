@@ -39,10 +39,10 @@ private:
             _mqtt_client = _factory->create_mqtt_client();
         _mqtt_client->connect(MQTT_HOSTNAME, MQTT_CLIENT_ID, MQTT_USERNAME,
                               MQTT_PASSWORD);
-        sabre::esp32::TimedWaiter w([this]() -> bool
-                                    { return _mqtt_client->is_connected(); },
-                                    5000, 100);
-        w();
+        auto w = _factory->create_timed_waiter(
+            [this]() -> bool { return _mqtt_client->is_connected(); }, 5000,
+            100);
+        (*w)();
         auto topic = _mqtt_client->get_topic("CB-KR23-DBL03-001/command");
         topic->subscribe(std::bind(&Application::_mqtt_command, this,
                                    std::placeholders::_1));
