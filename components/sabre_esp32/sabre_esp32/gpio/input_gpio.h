@@ -21,6 +21,7 @@ namespace sabre::esp32
 
     public:
         InputGPIO(int32_t pin_number);
+        ~InputGPIO();
 
         void reset() override;
 

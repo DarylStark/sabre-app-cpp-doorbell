@@ -23,6 +23,7 @@ namespace sabre::esp32
 
     public:
         WifiSoftAP();
+        ~WifiSoftAP();
         void init();
         void start(std::string ssid, std::string password);
         void stop();

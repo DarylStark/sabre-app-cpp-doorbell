@@ -37,6 +37,11 @@ namespace sabre::esp32
     {
     }
 
+    WifiStation::~WifiStation()
+    {
+        deinitialize();
+    }
+
     void WifiStation::wifi_event_handler(esp_event_base_t event_base,
                                          int32_t event_id, void *event_data)
     {
@@ -124,6 +129,7 @@ namespace sabre::esp32
 
     void WifiStation::deinitialize()
     {
+        stop();
         _wifi_instance->deinitialize();
         esp_event_handler_unregister(WIFI_EVENT, ESP_EVENT_ANY_ID,
                                      &_wifi_event_handler);

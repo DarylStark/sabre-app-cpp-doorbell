@@ -65,8 +65,8 @@ extern "C"
     {
         Application app(std::make_shared<sabre::esp32::Factory>());
 
-        while (true)
-            vTaskDelay(pdMS_TO_TICKS(1000));
+        // while (true)
+        vTaskDelay(pdMS_TO_TICKS(10000));
 
         return;
     }

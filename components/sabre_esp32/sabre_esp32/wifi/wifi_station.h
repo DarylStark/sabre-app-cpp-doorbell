@@ -25,6 +25,7 @@ namespace sabre::esp32
 
     public:
         WifiStation();
+        ~WifiStation();
         void init() override;
         void connect(const std::string &ssid,
                      const std::string &password) override;
