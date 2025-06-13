@@ -7,6 +7,11 @@ namespace sabre
 
     IPv4Address::IPv4Address(uint32_t address) : _address(address) {}
 
+    void IPv4Address::set(uint32_t address)
+    {
+        _address = address;
+    }
+
     uint16_t IPv4Address::operator[](uint8_t octet) const
     {
         return _address >> ((3 - octet) * 8) & 0xff;

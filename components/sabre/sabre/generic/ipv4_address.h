@@ -15,6 +15,8 @@ namespace sabre
         IPv4Address();
         IPv4Address(uint32_t address);
 
+        void set(uint32_t address);
+
         uint16_t operator[](uint8_t octet) const;
         operator uint32_t() const;
         operator std::string() const;
