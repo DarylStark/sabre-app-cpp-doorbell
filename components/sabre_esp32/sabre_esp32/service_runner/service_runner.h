@@ -20,6 +20,7 @@ namespace sabre::esp32
         virtual void _service() = 0;
 
     public:
+        virtual ~ServiceRunner();
         virtual void start() override;
         virtual void stop() override;
         virtual bool is_running() const;

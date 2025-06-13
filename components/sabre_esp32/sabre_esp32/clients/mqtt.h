@@ -16,6 +16,7 @@ namespace sabre::esp32
         void _run_subscription(esp_mqtt_event_handle_t event_data);
 
     public:
+        ~MQTTClient();
         void connect(const std::string &hostname, const std::string &client_id,
                      const std::string &username,
                      const std::string &password) override;

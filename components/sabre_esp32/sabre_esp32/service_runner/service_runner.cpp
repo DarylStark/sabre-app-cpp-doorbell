@@ -9,6 +9,11 @@ namespace sabre::esp32
         _obj->stop();
     }
 
+    ServiceRunner::~ServiceRunner()
+    {
+        stop();
+    }
+
     void ServiceRunner::start()
     {
         xTaskCreate(&ServiceRunner::_runner, "ServiceTask", 2048, this, 5,

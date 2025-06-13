@@ -12,6 +12,11 @@ namespace sabre::esp32
                          "Failed to set GPIO direction");
     }
 
+    OutputGPIO::~OutputGPIO()
+    {
+        reset();
+    }
+
     void OutputGPIO::reset()
     {
         throw_if_esp_err(gpio_reset_pin(_gpio_num), "Failed to reset GPIO");

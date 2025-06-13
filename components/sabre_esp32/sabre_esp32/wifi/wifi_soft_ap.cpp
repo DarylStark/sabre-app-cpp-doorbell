@@ -20,6 +20,11 @@ namespace sabre::esp32
     {
     }
 
+    WifiSoftAP::~WifiSoftAP()
+    {
+        deinitialize();
+    }
+
     void WifiSoftAP::wifi_event_handler(esp_event_base_t event_base,
                                         int32_t event_id, void *event_data)
     {
@@ -62,6 +67,7 @@ namespace sabre::esp32
 
     void WifiSoftAP::deinitialize()
     {
+        stop();
         _wifi_instance->deinitialize();
         esp_event_handler_unregister(WIFI_EVENT, ESP_EVENT_ANY_ID,
                                      &_wifi_event_handler_two);

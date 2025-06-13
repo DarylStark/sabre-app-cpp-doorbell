@@ -12,6 +12,11 @@ void _esp32_mqtt_event_handler(void *handler_args, esp_event_base_t base,
 
 namespace sabre::esp32
 {
+    MQTTClient::~MQTTClient()
+    {
+        stop();
+    }
+
     void MQTTClient::connect(const std::string &hostname,
                              const std::string &client_id,
                              const std::string &username,
@@ -63,8 +68,7 @@ namespace sabre::esp32
                                 static_cast<int>(retain));
     }
 
-    void MQTTClient::subscribe(const std::string &topic,
-                               sabre::MQTTCallback fn,
+    void MQTTClient::subscribe(const std::string &topic, sabre::MQTTCallback fn,
                                sabre::MQTTQoS qos)
     {
         if (qos == sabre::MQTTQoS::UNDEFINED)
