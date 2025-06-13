@@ -147,6 +147,6 @@ namespace sabre::esp32
 
     bool WifiStation::has_ipv4_address() const
     {
-        return _ipv4_address != 0;
+        return _ipv4_address != IPv4Address(0);
     }
 } // namespace sabre::esp32
