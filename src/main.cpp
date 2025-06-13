@@ -28,9 +28,13 @@ private:
         if (_station == nullptr)
             _station = _factory->create_wifi_station();
         _station->connect(WIFI_SSID, WIFI_PASS);
-        sabre::esp32::TimedWaiter w(
+        auto w = _factory->create_timed_waiter(
             [this]() -> bool { return _station->is_connected(); }, 5000, 100);
-        w();
+        (*w)();
+        auto w2 = _factory->create_timed_waiter(
+            [this]() -> bool { return _station->has_ipv4_address(); }, 5000,
+            100);
+        (*w2)();
     }
 
     void _connect_mqtt()
@@ -54,7 +58,6 @@ public:
         _led = _factory->create_output_gpio(2);
         _led->set_high();
         _connect_wifi();
-        vTaskDelay(pdMS_TO_TICKS(6000));
         _connect_mqtt();
     }
 };
@@ -65,8 +68,8 @@ extern "C"
     {
         Application app(std::make_shared<sabre::esp32::Factory>());
 
-        // while (true)
-        vTaskDelay(pdMS_TO_TICKS(10000));
+        while (true)
+            vTaskDelay(pdMS_TO_TICKS(10000));
 
         return;
     }

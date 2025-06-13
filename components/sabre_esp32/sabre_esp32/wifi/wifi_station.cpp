@@ -64,15 +64,15 @@ namespace sabre::esp32
         {
             ip_event_got_ip_t *event = (ip_event_got_ip_t *)event_data;
 
-            sabre::IPv4Address ipv4(ntohl(event->ip_info.ip.addr));
-            sabre::IPv4Address mask(ntohl(event->ip_info.netmask.addr));
-            sabre::IPv4Address gateway(ntohl(event->ip_info.gw.addr));
+            _ipv4_address.set(ntohl(event->ip_info.ip.addr));
+            _ipv4_mask.set(ntohl(event->ip_info.netmask.addr));
+            _ipv4_gateway.set(ntohl(event->ip_info.gw.addr));
 
             _logger.debug("Got IPv4 address");
             std::stringstream log;
-            log << "IP address: " << std::string(ipv4) << ", "
-                << "mask: " << std::string(mask) << ", "
-                << "gateway: " << std::string(gateway);
+            log << "IP address: " << std::string(_ipv4_address) << ", "
+                << "mask: " << std::string(_ipv4_mask) << ", "
+                << "gateway: " << std::string(_ipv4_gateway);
             _logger.info(log.str());
         }
         else if (event_id == IP_EVENT_STA_LOST_IP)
@@ -140,5 +140,10 @@ namespace sabre::esp32
     bool WifiStation::is_connected() const
     {
         return this->_connected;
+    }
+
+    bool WifiStation::has_ipv4_address() const
+    {
+        return _ipv4_address != 0;
     }
 } // namespace sabre::esp32

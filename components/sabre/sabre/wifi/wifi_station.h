@@ -16,6 +16,7 @@ namespace sabre
         virtual void deinitialize() = 0;
 
         virtual bool is_connected() const = 0;
+        virtual bool has_ipv4_address() const = 0;
     };
     using WifiStationPtr = WifiStation *;
     using WifiStationSharedPtr = std::shared_ptr<WifiStation>;

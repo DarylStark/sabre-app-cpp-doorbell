@@ -3,6 +3,7 @@
 
 #include "wifi.h"
 #include <esp_wifi.h>
+#include <sabre/generic/ipv4_address.h>
 #include <sabre/logging/logging.h>
 #include <sabre/wifi/wifi_station.h>
 #include <string>
@@ -23,6 +24,10 @@ namespace sabre::esp32
 
         sabre::Logger _logger;
 
+        sabre::IPv4Address _ipv4_address;
+        sabre::IPv4Address _ipv4_mask;
+        sabre::IPv4Address _ipv4_gateway;
+
     public:
         WifiStation();
         ~WifiStation();
@@ -34,6 +39,7 @@ namespace sabre::esp32
         void deinitialize() override;
 
         bool is_connected() const;
+        bool has_ipv4_address() const;
 
         // Handlers for the `main event loop`
         void wifi_event_handler(esp_event_base_t event_base, int32_t event_id,
