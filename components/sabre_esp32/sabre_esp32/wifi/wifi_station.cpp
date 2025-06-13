@@ -77,6 +77,9 @@ namespace sabre::esp32
         }
         else if (event_id == IP_EVENT_STA_LOST_IP)
         {
+            _ipv4_address.set(0);
+            _ipv4_mask.set(0);
+            _ipv4_gateway.set(0);
             _logger.info("Lost IP address");
         }
     }
