@@ -7,8 +7,6 @@
 
 #include "credentials.h"
 
-#include <iostream>
-
 class Application
 {
 private:
@@ -79,7 +77,6 @@ extern "C"
 {
     void app_main(void)
     {
-        // gpio_install_isr_service(0);
         Application app(std::make_shared<sabre::esp32::Factory>());
 
         while (true)
