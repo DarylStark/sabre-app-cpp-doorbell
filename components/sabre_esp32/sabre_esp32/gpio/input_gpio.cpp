@@ -67,7 +67,11 @@ namespace sabre::esp32
         _config->gpio = static_cast<int32_t>(_gpio_num);
 
         if (!_isr_service_installed)
-            gpio_install_isr_service(0);
+        {
+            throw_if_esp_err(gpio_install_isr_service(0),
+                             "Failed to install ISR service");
+            _isr_service_installed = true;
+        }
 
         throw_if_esp_err(
             gpio_set_intr_type(_gpio_num, _trigger_map.at(trigger)),
