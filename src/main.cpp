@@ -14,6 +14,7 @@ private:
     sabre::WifiStationSharedPtr _station;
     sabre::MQTTClientSharedPtr _mqtt_client;
     sabre::OutputGPIOSharedPtr _led;
+    sabre::InputGPIOSharedPtr _button;
 
     void _mqtt_command(sabre::MQTTEvent e)
     {
@@ -52,10 +53,20 @@ private:
                                    std::placeholders::_1));
     }
 
+    void _isr_button(int s)
+    {
+        _led->set_low();
+    }
+
 public:
     Application(sabre::FactorySharedPtr factory) : _factory(factory)
     {
         _led = _factory->create_output_gpio(2);
+        _button = factory->create_input_gpio(26);
+        _button->enable_pullup();
+        _button->add_interrupt_handler(
+            std::bind(&Application::_isr_button, this, std::placeholders::_1),
+            sabre::ISRTrigger::RISING);
         _led->set_high();
         _connect_wifi();
         _connect_mqtt();

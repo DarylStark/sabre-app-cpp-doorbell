@@ -11,6 +11,7 @@ namespace sabre::esp32
             {sabre::ISRTrigger::BOTH, GPIO_INTR_ANYEDGE},
             {sabre::ISRTrigger::LOW, GPIO_INTR_LOW_LEVEL},
             {sabre::ISRTrigger::HIGH, GPIO_INTR_HIGH_LEVEL}};
+    bool InputGPIO::_isr_service_installed = false;
 
     InputGPIO::InputGPIO(int32_t pin_number)
         : _pin_number(pin_number),
@@ -64,6 +65,13 @@ namespace sabre::esp32
         _config = std::make_shared<sabre::ISRConfig>();
         _config->handler = handler;
         _config->gpio = static_cast<int32_t>(_gpio_num);
+
+        if (!_isr_service_installed)
+        {
+            throw_if_esp_err(gpio_install_isr_service(0),
+                             "Failed to install ISR service");
+            _isr_service_installed = true;
+        }
 
         throw_if_esp_err(
             gpio_set_intr_type(_gpio_num, _trigger_map.at(trigger)),
