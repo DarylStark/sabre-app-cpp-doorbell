@@ -18,6 +18,7 @@ namespace sabre::esp32
 
         static std::unordered_map<sabre::ISRTrigger, gpio_int_type_t>
             _trigger_map;
+        static bool _isr_service_installed;
 
     public:
         InputGPIO(int32_t pin_number);
