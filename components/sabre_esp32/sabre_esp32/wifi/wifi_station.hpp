@@ -1,7 +1,7 @@
 #ifndef SABRE_ESP32_WIFI_STATION_H
 #define SABRE_ESP32_WIFI_STATION_H
 
-#include "wifi.h"
+#include "wifi.hpp"
 #include <esp_wifi.h>
 #include <sabre/generic/ipv4_address.h>
 #include <sabre/logging/logging.h>

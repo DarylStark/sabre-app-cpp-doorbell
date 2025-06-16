@@ -1,5 +1,5 @@
-#include "input_gpio.h"
-#include "../exceptions/exceptions.h"
+#include "input_gpio.hpp"
+#include "../exceptions/exceptions.hpp"
 #include <driver/gpio.h>
 
 namespace sabre::esp32

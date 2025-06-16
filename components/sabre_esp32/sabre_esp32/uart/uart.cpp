@@ -1,5 +1,5 @@
-#include "uart.h"
-#include "../exceptions/exceptions.h"
+#include "uart.hpp"
+#include "../exceptions/exceptions.hpp"
 
 namespace sabre::esp32
 {

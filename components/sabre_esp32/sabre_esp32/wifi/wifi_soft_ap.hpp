@@ -1,7 +1,7 @@
 #ifndef SABRE_ESP32_WIFI_SOFT_AP_H
 #define SABRE_ESP32_WIFI_SOFT_AP_H
 
-#include "wifi.h"
+#include "wifi.hpp"
 #include <esp_wifi.h>
 #include <sabre/logging/logging.h>
 #include <sabre/wifi/wifi_soft_ap.h>
