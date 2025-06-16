@@ -1,9 +1,9 @@
 #include <freertos/FreeRTOS.h>
 
-#include <sabre_esp32/factory.h>
+#include <sabre_esp32/factory.hpp>
 
 #include <sabre/clients/mqtt.h>
-#include <sabre_esp32/utility/timed_waiter.h>
+#include <sabre_esp32/utility/timed_waiter.hpp>
 
 #include "credentials.h"
 

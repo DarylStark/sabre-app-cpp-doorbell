@@ -1,5 +1,5 @@
-#include "wifi.h"
-#include "../utility/timed_waiter.h"
+#include "wifi.hpp"
+#include "../utility/timed_waiter.hpp"
 #include <esp_event.h>
 #include <esp_netif.h>
 #include <nvs_flash.h>
