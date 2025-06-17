@@ -5,7 +5,7 @@
 #include <cstdint> // For uint32_t
 
 #include <driver/uart.h>
-#include <sabre/uart/uart.h>
+#include <sabre/uart/uart.hpp>
 
 #define BUF_SIZE 1024
 

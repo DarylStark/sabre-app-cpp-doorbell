@@ -31,9 +31,9 @@ namespace sabre::esp32
         throw_if_esp_err(gpio_reset_pin(_gpio_num), "Failed to reset GPIO");
     }
 
-    bool InputGPIO::get_level() const
+    bool InputGPIO::_get_level() const
     {
-        return gpio_get_level(_gpio_num) == static_cast<int>(!_inverse_level);
+        return gpio_get_level(_gpio_num) == 1;
     }
 
     void InputGPIO::enable_pullup()

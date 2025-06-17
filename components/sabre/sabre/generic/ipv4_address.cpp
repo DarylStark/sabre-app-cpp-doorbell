@@ -1,4 +1,4 @@
-#include "ipv4_address.h"
+#include "ipv4_address.hpp"
 #include <ostream>
 
 namespace sabre
@@ -32,9 +32,9 @@ namespace sabre
             result += std::to_string((*this)[i]);
         }
         return result;
-    }
+    } // LCOV_EXCL_LINE
 
-    std::ostream &operator<<(std::ostream &os, const IPv4Address &ipv4)
+    std::ostream &operator<<(std::ostream &os, const sabre::IPv4Address &ipv4)
     {
         os << static_cast<std::string>(ipv4);
         return os;

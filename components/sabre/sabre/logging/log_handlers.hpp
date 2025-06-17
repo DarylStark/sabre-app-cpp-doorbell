@@ -1,7 +1,7 @@
 #ifndef SABRE_LOG_HANDLERS_H
 #define SABRE_LOG_HANDLERS_H
 
-#include "logging.h"
+#include "logging.hpp"
 #include <memory>
 #include <ostream>
 #include <vector>

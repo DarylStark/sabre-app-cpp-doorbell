@@ -6,7 +6,7 @@
 #include <esp_netif.h>
 #include <lwip/inet.h>
 #include <nvs_flash.h>
-#include <sabre/generic/ipv4_address.h>
+#include <sabre/generic/ipv4_address.hpp>
 #include <sstream>
 
 #define WIFI_MAX_RETRY 5

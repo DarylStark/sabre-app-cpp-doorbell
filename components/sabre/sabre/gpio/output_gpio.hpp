@@ -1,7 +1,7 @@
 #ifndef SABRE_OUTPUT_GPIO_H
 #define SABRE_OUTPUT_GPIO_H
 
-#include "gpio.h"
+#include "gpio.hpp"
 
 namespace sabre
 {

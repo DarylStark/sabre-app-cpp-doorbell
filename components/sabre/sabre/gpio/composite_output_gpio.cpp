@@ -1,4 +1,4 @@
-#include "composite_output_gpio.h"
+#include "composite_output_gpio.hpp"
 
 namespace sabre
 {

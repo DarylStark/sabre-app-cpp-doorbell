@@ -10,7 +10,7 @@
 #include "wifi/wifi_station.hpp"
 #include <map>
 #include <memory>
-#include <sabre/factory.h>
+#include <sabre/factory.hpp>
 
 namespace sabre::esp32
 {

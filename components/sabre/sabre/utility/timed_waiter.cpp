@@ -1,4 +1,4 @@
-#include "timed_waiter.h"
+#include "timed_waiter.hpp"
 
 namespace sabre
 {

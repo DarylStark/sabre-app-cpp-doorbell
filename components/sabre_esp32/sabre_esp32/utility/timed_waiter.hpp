@@ -3,7 +3,7 @@
 
 #include <esp_timer.h>
 #include <freertos/FreeRTOS.h>
-#include <sabre/utility/timed_waiter.h>
+#include <sabre/utility/timed_waiter.hpp>
 
 namespace sabre::esp32
 {

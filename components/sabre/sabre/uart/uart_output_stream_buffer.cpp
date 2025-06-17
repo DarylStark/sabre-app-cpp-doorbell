@@ -1,6 +1,6 @@
 #include <streambuf>
 
-#include "uart_output_stream_buffer.h"
+#include "uart_output_stream_buffer.hpp"
 
 namespace sabre
 {
@@ -23,7 +23,10 @@ namespace sabre
         if (c != traits_type::eof())
         {
             if (pptr() >= epptr())
+            {
                 sync();
+                _uart->flush();
+            }
             *pptr() = c;
             pbump(1);
         }

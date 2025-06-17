@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <driver/gpio.h>
 #include <memory>
-#include <sabre/gpio/output_gpio.h>
+#include <sabre/gpio/output_gpio.hpp>
 
 namespace sabre::esp32
 {

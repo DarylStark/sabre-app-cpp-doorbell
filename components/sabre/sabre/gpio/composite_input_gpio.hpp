@@ -3,7 +3,7 @@
 
 #include <list>
 #include <memory>
-#include <sabre/gpio/input_gpio.h>
+#include <sabre/gpio/input_gpio.hpp>
 
 namespace sabre
 {

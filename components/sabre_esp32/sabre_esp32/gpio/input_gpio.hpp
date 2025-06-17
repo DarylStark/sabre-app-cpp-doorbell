@@ -5,7 +5,7 @@
 #include <driver/gpio.h>
 #include <map>
 #include <memory>
-#include <sabre/gpio/input_gpio.h>
+#include <sabre/gpio/input_gpio.hpp>
 
 namespace sabre::esp32
 {
@@ -20,13 +20,14 @@ namespace sabre::esp32
             _trigger_map;
         static bool _isr_service_installed;
 
+        bool _get_level() const override;
+
     public:
         InputGPIO(int32_t pin_number);
         ~InputGPIO();
 
         void reset() override;
 
-        bool get_level() const override;
         void enable_pullup() override;
         void enable_pulldown() override;
         void disable_pullup() override;

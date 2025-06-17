@@ -3,8 +3,8 @@
 
 #include "wifi.hpp"
 #include <esp_wifi.h>
-#include <sabre/logging/logging.h>
-#include <sabre/wifi/wifi_soft_ap.h>
+#include <sabre/logging/logging.hpp>
+#include <sabre/wifi/wifi_soft_ap.hpp>
 #include <string>
 
 namespace sabre::esp32

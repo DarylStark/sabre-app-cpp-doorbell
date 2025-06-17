@@ -2,7 +2,7 @@
 
 #include <sabre_esp32/factory.hpp>
 
-#include <sabre/clients/mqtt.h>
+#include <sabre/clients/mqtt.hpp>
 #include <sabre_esp32/utility/timed_waiter.hpp>
 
 #include "credentials.h"
