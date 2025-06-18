@@ -85,19 +85,17 @@ namespace sabre::esp32
         return _connected;
     }
 
-    void MQTTClient::_run_subscription(esp_mqtt_event_handle_t event_data)
+    sabre::MQTTEvent
+    MQTTClient::_create_event(esp_mqtt_event_handle_t event_data) const
     {
         std::string topic(event_data->topic, event_data->topic_len);
         std::string data(event_data->data, event_data->data_len);
 
-        sabre::MQTTEvent mqtt_event{
-            std::string(event_data->topic, event_data->topic_len),
-            std::string(event_data->data, event_data->data_len),
-            static_cast<sabre::MQTTRetain>(event_data->retain),
-            static_cast<sabre::MQTTQoS>(event_data->qos)};
-
-        if (_subscriptions.find(mqtt_event.topic) != _subscriptions.end())
-            _subscriptions[topic](mqtt_event);
+        return sabre::MQTTEvent(
+            {std::string(event_data->topic, event_data->topic_len),
+             std::string(event_data->data, event_data->data_len),
+             static_cast<sabre::MQTTQoS>(event_data->qos),
+             static_cast<sabre::MQTTRetain>(event_data->retain)});
     }
 
     void MQTTClient::handle_event(esp_event_base_t event_base, int32_t event_id,
@@ -115,7 +113,7 @@ namespace sabre::esp32
             _connected = false;
             break;
         case MQTT_EVENT_DATA:
-            _run_subscription(event);
+            this->process_received(_create_event(event));
             break;
         default:
             break;

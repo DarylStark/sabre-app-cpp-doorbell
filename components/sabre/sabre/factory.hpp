@@ -1,14 +1,14 @@
 #ifndef SABRE_FACTORY_H
 #define SABRE_FACTORY_H
 
-#include "clients/mqtt.h"
-#include "gpio/input_gpio.h"
-#include "gpio/output_gpio.h"
-#include "uart/uart.h"
-#include "uart/uart_output_stream_buffer.h"
-#include "utility/timed_waiter.h"
-#include "wifi/wifi_soft_ap.h"
-#include "wifi/wifi_station.h"
+#include "clients/mqtt.hpp"
+#include "gpio/input_gpio.hpp"
+#include "gpio/output_gpio.hpp"
+#include "uart/uart.hpp"
+#include "uart/uart_output_stream_buffer.hpp"
+#include "utility/timed_waiter.hpp"
+#include "wifi/wifi_soft_ap.hpp"
+#include "wifi/wifi_station.hpp"
 #include <memory>
 #include <ostream>
 

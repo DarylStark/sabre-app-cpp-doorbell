@@ -2,7 +2,7 @@
 #define SABRE_ESP32_CLIENTS_MQTT_H
 
 #include <mqtt_client.h>
-#include <sabre/clients/mqtt.h>
+#include <sabre/clients/mqtt.hpp>
 #include <string>
 
 namespace sabre::esp32
@@ -14,6 +14,8 @@ namespace sabre::esp32
         esp_mqtt_client_handle_t _client = nullptr;
 
         void _run_subscription(esp_mqtt_event_handle_t event_data);
+        sabre::MQTTEvent
+        _create_event(esp_mqtt_event_handle_t event_data) const;
 
     public:
         ~MQTTClient();

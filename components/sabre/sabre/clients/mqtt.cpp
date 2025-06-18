@@ -1,4 +1,4 @@
-#include "mqtt.h"
+#include "mqtt.hpp"
 
 namespace sabre
 {
@@ -50,4 +50,18 @@ namespace sabre
     {
         return std::make_unique<MQTTTopic>(*this, topic_name);
     }
+
+    void MQTTClient::process_received(MQTTEvent event)
+    {
+        if (_subscriptions.find(event.topic) != _subscriptions.end())
+            _subscriptions[event.topic](event);
+        else if (_default_handler != nullptr)
+            _default_handler(event);
+    }
+
+    void MQTTClient::set_default_handler(MQTTCallback handler)
+    {
+        _default_handler = handler;
+    }
+
 } // namespace sabre

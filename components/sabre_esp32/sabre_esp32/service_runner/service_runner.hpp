@@ -4,7 +4,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <functional>
-#include <sabre/service_runner/service_runner.h>
+#include <sabre/service_runner/service_runner.hpp>
 
 namespace sabre::esp32
 {

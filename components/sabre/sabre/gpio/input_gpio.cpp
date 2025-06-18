@@ -1,15 +1,15 @@
-#include "input_gpio.h"
+#include "input_gpio.hpp"
 
 namespace sabre
 {
-    void InputGPIO::set_inverse_level()
+    bool InputGPIO::get_level() const
     {
-        _inverse_level = true;
+        return _get_level() == !_inverse_level;
     }
 
-    void InputGPIO::set_original_level()
+    void InputGPIO::set_inverse_level(bool level)
     {
-        _inverse_level = false;
+        _inverse_level = level;
     }
 
     bool InputGPIO::get_inverse_level() const

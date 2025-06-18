@@ -1,7 +1,7 @@
 #ifndef SABRE_UART_OUTPUT_STREAM_BUFFER_H
 #define SABRE_UART_OUTPUT_STREAM_BUFFER_H
 
-#include "uart.h"
+#include "uart.hpp"
 #include <memory>
 #include <streambuf>
 

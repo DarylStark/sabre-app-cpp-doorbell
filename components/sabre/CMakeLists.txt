@@ -2,8 +2,6 @@ idf_component_register(
     SRCS
         sabre/factory.cpp
         sabre/gpio/input_gpio.cpp
-        sabre/gpio/composite_input_gpio.cpp
-        sabre/gpio/composite_output_gpio.cpp
         sabre/uart/uart_output_stream_buffer.cpp
         sabre/logging/logging.cpp
         sabre/logging/log_handlers.cpp

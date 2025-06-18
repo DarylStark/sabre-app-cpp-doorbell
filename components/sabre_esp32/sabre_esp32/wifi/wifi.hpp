@@ -4,7 +4,7 @@
 #include <bitset>
 #include <esp_wifi.h>
 #include <memory>
-#include <sabre/logging/logging.h>
+#include <sabre/logging/logging.hpp>
 
 namespace sabre::esp32
 {

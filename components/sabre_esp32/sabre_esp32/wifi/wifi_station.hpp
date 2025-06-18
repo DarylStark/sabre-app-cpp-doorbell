@@ -3,9 +3,9 @@
 
 #include "wifi.hpp"
 #include <esp_wifi.h>
-#include <sabre/generic/ipv4_address.h>
-#include <sabre/logging/logging.h>
-#include <sabre/wifi/wifi_station.h>
+#include <sabre/generic/ipv4_address.hpp>
+#include <sabre/logging/logging.hpp>
+#include <sabre/wifi/wifi_station.hpp>
 #include <string>
 
 namespace sabre::esp32
