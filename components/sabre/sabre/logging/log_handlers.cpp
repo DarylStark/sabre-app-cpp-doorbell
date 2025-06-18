@@ -17,7 +17,6 @@ namespace sabre
     LogBufferHandler::LogBufferHandler(size_t size)
         : _buffer(0), _max_size(size)
     {
-        _buffer.reserve(size);
     }
 
     void LogBufferHandler::handle_log(const LoggingLevel level,
@@ -29,7 +28,7 @@ namespace sabre
             _buffer.erase(_buffer.begin());
     }
 
-    const std::vector<std::string> &LogBufferHandler::get_buffer() const
+    const LogBufferHandlerBuffer &LogBufferHandler::get_buffer() const
     {
         return _buffer;
     }

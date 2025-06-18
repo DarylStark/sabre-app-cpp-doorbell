@@ -64,8 +64,6 @@ namespace sabre
                         const std::string &message);
         static void add_handler(LogHandlerSharedPtr handler);
     };
-    using LoggingPtr = Logging *;
-    using LoggingSharedPtr = std::shared_ptr<Logging>;
 }; // namespace sabre
 
 #endif // SABRE_LOGGING_H

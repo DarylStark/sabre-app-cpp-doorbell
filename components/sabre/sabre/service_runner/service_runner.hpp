@@ -7,6 +7,9 @@ namespace sabre
 {
     class ServiceRunner
     {
+    protected:
+        virtual void _service() = 0;
+
     public:
         virtual void start() = 0;
         virtual void stop() = 0;

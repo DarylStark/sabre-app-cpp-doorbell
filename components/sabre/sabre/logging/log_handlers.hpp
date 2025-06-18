@@ -2,9 +2,9 @@
 #define SABRE_LOG_HANDLERS_H
 
 #include "logging.hpp"
+#include <deque>
 #include <memory>
 #include <ostream>
-#include <vector>
 
 namespace sabre
 {
@@ -22,10 +22,11 @@ namespace sabre
     using OStreamLogHandlerPtr = OStreamLogHandler *;
     using OStreamLogHandlerSharedPtr = std::shared_ptr<OStreamLogHandler>;
 
+    using LogBufferHandlerBuffer = std::deque<std::string>;
     class LogBufferHandler : public LogHandler
     {
     private:
-        std::vector<std::string> _buffer;
+        LogBufferHandlerBuffer _buffer;
         size_t _max_size;
 
     public:
@@ -33,7 +34,7 @@ namespace sabre
         void handle_log(const LoggingLevel level,
                         const std::string &logger_name,
                         const std::string &message) override;
-        const std::vector<std::string> &get_buffer() const;
+        const LogBufferHandlerBuffer &get_buffer() const;
     };
     using LogBufferHandlerPtr = LogBufferHandler *;
     using LogBufferHandlerSharedPtr = std::shared_ptr<LogBufferHandler>;
