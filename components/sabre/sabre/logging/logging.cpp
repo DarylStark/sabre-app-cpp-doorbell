@@ -74,4 +74,9 @@ namespace sabre
     {
         _handlers.push_front(handler);
     }
+
+    void Logging::remove_handler(LogHandlerSharedPtr handler)
+    {
+        _handlers.remove(handler);
+    }
 } // namespace sabre

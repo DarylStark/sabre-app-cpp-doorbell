@@ -63,6 +63,7 @@ namespace sabre
                         const std::string &logger_name,
                         const std::string &message);
         static void add_handler(LogHandlerSharedPtr handler);
+        static void remove_handler(LogHandlerSharedPtr handler);
     };
 }; // namespace sabre
 
