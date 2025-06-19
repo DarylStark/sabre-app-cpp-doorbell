@@ -45,14 +45,6 @@ namespace sabre::esp32
         _is_initialized = true;
     }
 
-    int UART::get_bytes(char *data, size_t length, uint32_t timeout) const
-    {
-        int bytes_read =
-            uart_read_bytes(_port, data, length, pdMS_TO_TICKS(timeout));
-        throw_if_negative_value(bytes_read, "Failed to read bytes from UART");
-        return bytes_read;
-    }
-
     int UART::write_byte(char data) const
     {
         int bytes_written = uart_write_bytes(_port, &data, 1);

@@ -7,7 +7,7 @@ idf_component_register(
         sabre_esp32/wifi/wifi_soft_ap.cpp
         sabre_esp32/wifi/wifi.cpp
         sabre_esp32/factory.cpp
-        sabre_esp32/utility/timed_waiter.cpp
+        sabre_esp32/utility/wait_for.cpp
         sabre_esp32/service/service.cpp
         sabre_esp32/clients/mqtt.cpp
     INCLUDE_DIRS

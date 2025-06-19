@@ -37,10 +37,10 @@ namespace sabre::esp32
         return std::make_shared<MQTTClient>();
     }
 
-    sabre::TimedWaiterSharedPtr
-    Factory::create_timed_waiter(TimedWaiterPred fn, uint64_t timeout_in_ms,
-                                 uint64_t sleep_time) const
+    sabre::WaitForSharedPtr Factory::create_wait_for(WaitForPred fn,
+                                                     uint64_t timeout_in_ms,
+                                                     uint64_t sleep_time) const
     {
-        return std::make_shared<TimedWaiter>(fn, timeout_in_ms, sleep_time);
+        return std::make_shared<WaitFor>(fn, timeout_in_ms, sleep_time);
     }
 } // namespace sabre::esp32
