@@ -8,6 +8,11 @@ namespace sabre::esp32
         _obj->_fn();
     }
 
+    Service::Service(sabre::ServiceHandler function)
+        : sabre::Service(function), _freertos_handle(nullptr)
+    {
+    }
+
     Service::~Service()
     {
         stop();

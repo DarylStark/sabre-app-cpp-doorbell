@@ -3,7 +3,7 @@
 #include <sabre_esp32/factory.hpp>
 
 #include <sabre/clients/mqtt.hpp>
-#include <sabre_esp32/utility/timed_waiter.hpp>
+#include <sabre_esp32/utility/wait_for.hpp>
 
 #include "credentials.h"
 
@@ -29,10 +29,10 @@ private:
         if (_station == nullptr)
             _station = _factory->create_wifi_station();
         _station->connect(WIFI_SSID, WIFI_PASS);
-        auto w = _factory->create_timed_waiter(
+        auto w = _factory->create_wait_for(
             [this]() -> bool { return _station->is_connected(); }, 5000, 100);
         (*w)();
-        auto w2 = _factory->create_timed_waiter(
+        auto w2 = _factory->create_wait_for(
             [this]() -> bool { return _station->has_ipv4_address(); }, 5000,
             100);
         (*w2)();
@@ -44,7 +44,7 @@ private:
             _mqtt_client = _factory->create_mqtt_client();
         _mqtt_client->connect(MQTT_HOSTNAME, MQTT_CLIENT_ID, MQTT_USERNAME,
                               MQTT_PASSWORD);
-        auto w = _factory->create_timed_waiter(
+        auto w = _factory->create_wait_for(
             [this]() -> bool { return _mqtt_client->is_connected(); }, 5000,
             100);
         (*w)();

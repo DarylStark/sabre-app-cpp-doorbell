@@ -1,22 +1,22 @@
-#include "timed_waiter.hpp"
+#include "wait_for.hpp"
 
 namespace sabre
 {
 
-    bool TimedWaiter::_done(bool result, uint64_t total_runtime)
+    bool WaitFor::_done(bool result, uint64_t total_runtime)
     {
         _runtime = total_runtime;
         _result = result;
         return result;
     }
 
-    TimedWaiter::TimedWaiter(TimedWaiterPred fn, uint64_t timeout_in_ms,
-                             uint64_t sleep_time)
+    WaitFor::WaitFor(WaitForPred fn, uint64_t timeout_in_ms,
+                     uint64_t sleep_time)
         : _timeout_in_ms(timeout_in_ms), _fn(fn), _sleep_time(sleep_time)
     {
     }
 
-    bool TimedWaiter::operator()()
+    bool WaitFor::operator()()
     {
         uint64_t starttime = _get_current_time();
 
@@ -29,12 +29,12 @@ namespace sabre
         return _done(false, _get_current_time() - starttime);
     }
 
-    bool TimedWaiter::get_result() const
+    bool WaitFor::get_result() const
     {
         return _result;
     }
 
-    uint64_t TimedWaiter::get_result_runtime() const
+    uint64_t WaitFor::get_result_runtime() const
     {
         return _runtime;
     }

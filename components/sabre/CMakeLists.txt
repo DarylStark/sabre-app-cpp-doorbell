@@ -6,7 +6,7 @@ idf_component_register(
         sabre/logging/logging.cpp
         sabre/logging/log_handlers.cpp
         sabre/generic/ipv4_address.cpp
-        sabre/utility/timed_waiter.cpp
+        sabre/utility/wait_for.cpp
         sabre/service/service.cpp
         sabre/clients/mqtt.cpp
     INCLUDE_DIRS

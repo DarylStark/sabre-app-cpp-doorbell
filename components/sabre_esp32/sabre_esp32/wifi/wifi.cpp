@@ -1,5 +1,5 @@
 #include "wifi.hpp"
-#include "../utility/timed_waiter.hpp"
+#include "../utility/wait_for.hpp"
 #include <esp_event.h>
 #include <esp_netif.h>
 #include <nvs_flash.h>
@@ -98,8 +98,8 @@ namespace sabre::esp32
 
         _logger.debug("Starting WiFi");
         esp_wifi_start();
-        TimedWaiter wait_for_wifi_start(
-            [this]() { return this->_wifi_started; }, 1000, 10);
+        WaitFor wait_for_wifi_start([this]() { return this->_wifi_started; },
+                                    1000, 10);
         if (wait_for_wifi_start())
             _logger.debug("WiFi started successfully");
         else
