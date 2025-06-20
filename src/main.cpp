@@ -73,15 +73,32 @@ public:
     }
 };
 
+#include <iostream>
+
+#include <sabre/system/wall_clock.hpp>
+#include <sabre_esp32/system/wall_clock.hpp>
+
 extern "C"
 {
-    void app_main(void)
+    void app_main()
     {
-        Application app(std::make_shared<sabre::esp32::Factory>());
-
+        std::unique_ptr<sabre::WallClock> wc =
+            std::make_unique<sabre::esp32::WallClock>();
+        wc->set_now_ms(1750448367497);
         while (true)
-            vTaskDelay(pdMS_TO_TICKS(10000));
-
-        return;
+        {
+            std::cout << "Current time: " << wc->now_ms()
+                      << " ms since 1970-01-01 00:00:00 UTC" << std::endl;
+            vTaskDelay(pdMS_TO_TICKS(10));
+        }
     }
+    // void app_main(void)
+    // {
+    //     Application app(std::make_shared<sabre::esp32::Factory>());
+
+    //     while (true)
+    //         vTaskDelay(pdMS_TO_TICKS(10000));
+
+    //     return;
+    // }
 }

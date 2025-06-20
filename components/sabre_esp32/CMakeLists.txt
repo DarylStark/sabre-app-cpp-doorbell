@@ -10,6 +10,7 @@ idf_component_register(
         sabre_esp32/utility/wait_for.cpp
         sabre_esp32/service/service.cpp
         sabre_esp32/clients/mqtt.cpp
+        sabre_esp32/system/wall_clock.cpp
     INCLUDE_DIRS
         "." 
     PRIV_REQUIRES
