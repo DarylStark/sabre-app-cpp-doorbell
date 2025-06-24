@@ -7,6 +7,12 @@
 
 #include "credentials.h"
 
+#include "esp_sntp.h"
+#include <iostream>
+
+#include <sabre_esp32/clients/ntp.hpp>
+#include <sabre_esp32/system/wall_clock.hpp>
+
 class Application
 {
 private:
@@ -15,6 +21,8 @@ private:
     sabre::MQTTClientSharedPtr _mqtt_client;
     sabre::OutputGPIOSharedPtr _led;
     sabre::InputGPIOSharedPtr _button;
+
+    std::shared_ptr<sabre::NTPClient> _ntp_client;
 
     void _mqtt_command(sabre::MQTTEvent e)
     {
@@ -58,6 +66,16 @@ private:
         _led->set_low();
     }
 
+    void _connect_ntp()
+    {
+        _ntp_client = std::make_shared<sabre::esp32::NTPClient>("pool.ntp.org");
+        _ntp_client->start();
+        auto w = _factory->create_wait_for(
+            [this]() -> bool { return _ntp_client->is_synchronized(); }, 5000,
+            100);
+        (*w)();
+    }
+
 public:
     Application(sabre::FactorySharedPtr factory) : _factory(factory)
     {
@@ -70,35 +88,28 @@ public:
         _led->set_high();
         _connect_wifi();
         _connect_mqtt();
-    }
-};
+        _connect_ntp();
 
-#include <iostream>
-
-#include <sabre/system/wall_clock.hpp>
-#include <sabre_esp32/system/wall_clock.hpp>
-
-extern "C"
-{
-    void app_main()
-    {
         std::unique_ptr<sabre::WallClock> wc =
             std::make_unique<sabre::esp32::WallClock>();
-        wc->set_now_ms(1750448367497);
         while (true)
         {
             std::cout << "Current time: " << wc->now_ms()
                       << " ms since 1970-01-01 00:00:00 UTC" << std::endl;
-            vTaskDelay(pdMS_TO_TICKS(10));
+            vTaskDelay(pdMS_TO_TICKS(500));
         }
     }
-    // void app_main(void)
-    // {
-    //     Application app(std::make_shared<sabre::esp32::Factory>());
+};
 
-    //     while (true)
-    //         vTaskDelay(pdMS_TO_TICKS(10000));
+extern "C"
+{
+    void app_main(void)
+    {
+        Application app(std::make_shared<sabre::esp32::Factory>());
 
-    //     return;
-    // }
+        while (true)
+            vTaskDelay(pdMS_TO_TICKS(10000));
+
+        return;
+    }
 }
