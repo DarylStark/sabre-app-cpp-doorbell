@@ -21,8 +21,7 @@ private:
     sabre::MQTTClientSharedPtr _mqtt_client;
     sabre::OutputGPIOSharedPtr _led;
     sabre::InputGPIOSharedPtr _button;
-
-    std::shared_ptr<sabre::NTPClient> _ntp_client;
+    sabre::NTPClientSharedPtr _ntp_client;
 
     void _mqtt_command(sabre::MQTTEvent e)
     {

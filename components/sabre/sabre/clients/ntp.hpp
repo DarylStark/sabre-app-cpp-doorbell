@@ -1,6 +1,7 @@
 #ifndef SABRE_CLIENTS_NTP_HPP
 #define SABRE_CLIENTS_NTP_HPP
 
+#include <memory>
 #include <string>
 
 namespace sabre
@@ -30,6 +31,8 @@ namespace sabre
          */
         virtual bool is_synchronized() const = 0;
     };
+    using NTPClientPtr = NTPClient *;
+    using NTPClientSharedPtr = std::shared_ptr<NTPClient>;
 } // namespace sabre
 
 #endif // SABRE_CLIENTS_NTP_HPP
