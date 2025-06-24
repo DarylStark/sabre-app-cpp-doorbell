@@ -43,4 +43,10 @@ namespace sabre::esp32
     {
         return std::make_shared<WaitFor>(fn, timeout_in_ms, sleep_time);
     }
+
+    sabre::NTPClientSharedPtr
+    Factory::create_ntp_client(const std::string &server) const
+    {
+        return std::make_shared<NTPClient>(server);
+    }
 } // namespace sabre::esp32

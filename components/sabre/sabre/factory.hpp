@@ -2,6 +2,7 @@
 #define SABRE_FACTORY_H
 
 #include "clients/mqtt.hpp"
+#include "clients/ntp.hpp"
 #include "gpio/input_gpio.hpp"
 #include "gpio/output_gpio.hpp"
 #include "uart/uart.hpp"
@@ -114,6 +115,16 @@ namespace sabre
         virtual WaitForSharedPtr create_wait_for(WaitForPred fn,
                                                  uint64_t timeout_in_ms,
                                                  uint64_t sleep_time) const = 0;
+
+        /**
+         * @brief Create a `NTPClient` object.
+         *
+         * @param server the NTP server to use.
+         *
+         * @returns A `NTPClientSharedPtr` shared pointer to a `NTPClient`.
+         */
+        virtual NTPClientSharedPtr
+        create_ntp_client(const std::string &server) const = 0;
     };
     using FactoryPtr = Factory *;
     using FactorySharedPtr = std::shared_ptr<Factory>;
