@@ -1,14 +1,8 @@
+file(GLOB SOURCES sabre/**/*.cpp sabre/*.cpp)
+
 idf_component_register(
     SRCS
-        sabre/factory.cpp
-        sabre/gpio/input_gpio.cpp
-        sabre/uart/uart_output_stream_buffer.cpp
-        sabre/logging/logging.cpp
-        sabre/logging/log_handlers.cpp
-        sabre/generic/ipv4_address.cpp
-        sabre/utility/wait_for.cpp
-        sabre/service/service.cpp
-        sabre/clients/mqtt.cpp
+        ${SOURCES}
     INCLUDE_DIRS
         "."
 )
