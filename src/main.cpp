@@ -67,7 +67,7 @@ private:
 
     void _connect_ntp()
     {
-        _ntp_client = std::make_shared<sabre::esp32::NTPClient>("pool.ntp.org");
+        _ntp_client = _factory->create_ntp_client("pool.ntp.org");
         _ntp_client->start();
         auto w = _factory->create_wait_for(
             [this]() -> bool { return _ntp_client->is_synchronized(); }, 5000,
