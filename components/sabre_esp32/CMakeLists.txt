@@ -1,17 +1,8 @@
+file(GLOB SOURCES sabre_esp32/**/*.cpp sabre_esp32/*.cpp)
+
 idf_component_register(
     SRCS
-        sabre_esp32/uart/uart.cpp
-        sabre_esp32/gpio/input_gpio.cpp
-        sabre_esp32/gpio/output_gpio.cpp
-        sabre_esp32/wifi/wifi_station.cpp
-        sabre_esp32/wifi/wifi_soft_ap.cpp
-        sabre_esp32/wifi/wifi.cpp
-        sabre_esp32/factory.cpp
-        sabre_esp32/utility/wait_for.cpp
-        sabre_esp32/service/service.cpp
-        sabre_esp32/clients/mqtt.cpp
-        sabre_esp32/clients/ntp.cpp
-        sabre_esp32/system/wall_clock.cpp
+        ${SOURCES}
     INCLUDE_DIRS
         "." 
     PRIV_REQUIRES
